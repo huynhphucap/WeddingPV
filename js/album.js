@@ -4,6 +4,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cfg = window.WEDDING_CONFIG || {};
   const cloud = cfg.cloudinary || {};
+  const isSupabaseConfigured = !!window.sb;
   const isCloudinaryConfigured =
     cloud.cloudName && cloud.cloudName !== "YOUR_CLOUD_NAME" &&
     cloud.uploadPreset && cloud.uploadPreset !== "YOUR_UNSIGNED_UPLOAD_PRESET";
@@ -82,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderGrid(curatedGrid, CURATED_PHOTOS, CURATED_PHOTOS);
 
   /* =====================================================
-     2) ẢNH TỪ KHÁCH MỜI — lấy danh sách đã lưu qua Apps Script
+     2) ẢNH TỪ KHÁCH MỜI — lấy danh sách đã lưu trong Supabase
      ===================================================== */
   let guestPhotos = [];
 
@@ -102,17 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGrid(guestGrid, withThumb, withThumb);
   }
 
-  function loadGuestPhotos() {
-    if (!cfg.scriptURL) return;
-    fetch(`${cfg.scriptURL}?type=photos`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (json && json.status === "success" && Array.isArray(json.data)) {
-          guestPhotos = json.data.filter((p) => p.url);
-          renderGuestGrid();
-        }
-      })
-      .catch((err) => console.warn("Không tải được ảnh khách mời:", err));
+  async function loadGuestPhotos() {
+    if (!window.sb) return;
+    const { data, error } = await window.sb
+      .from("photos")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.warn("Không tải được ảnh khách mời:", error);
+      return;
+    }
+    guestPhotos = (data || []).filter((p) => p.url);
+    renderGuestGrid();
   }
   loadGuestPhotos();
   renderGuestGrid();
@@ -121,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
      3) UPLOAD ẢNH (Cloudinary unsigned upload)
      ===================================================== */
   const notice = document.getElementById("uploadConfigNotice");
-  if (!isCloudinaryConfigured && notice) notice.classList.add("show");
+  if ((!isCloudinaryConfigured || !isSupabaseConfigured) && notice) notice.classList.add("show");
 
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("fileInput");
@@ -212,22 +214,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function savePhotoMeta(url, name, message) {
-    if (!cfg.scriptURL) return Promise.resolve();
-    const body = new FormData();
-    body.append("formType", "photo");
-    body.append("url", url);
-    body.append("name", name);
-    body.append("message", message);
-    return fetch(cfg.scriptURL, { method: "POST", body }).catch((err) =>
-      console.warn("Không lưu được thông tin ảnh:", err)
-    );
+  async function savePhotoMeta(url, name, message) {
+    if (!window.sb) return;
+    const { error } = await window.sb.from("photos").insert({ url, name, message });
+    if (error) console.warn("Không lưu được thông tin ảnh:", error);
   }
 
   if (uploadForm) {
     uploadForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!isCloudinaryConfigured) {
+      if (!isCloudinaryConfigured || !isSupabaseConfigured) {
         uploadStatus.textContent = "Chức năng upload chưa được cấu hình. Xem SETUP.md để bật tính năng này.";
         uploadStatus.classList.add("error");
         return;

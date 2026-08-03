@@ -3,12 +3,13 @@
    Xem hướng dẫn chi tiết trong SETUP.md
    ========================================================= */
 window.WEDDING_CONFIG = {
-  // URL Web App của Google Apps Script (dùng chung cho RSVP, Sổ lưu bút, Album ảnh khách mời).
-  // Đây là URL đang được dùng sẵn cho form RSVP/Sổ lưu bút.
-  // Muốn trang Album & trang "Xem tất cả lời chúc" hoạt động, hãy cập nhật
-  // Apps Script của bạn theo file google-apps-script/Code.gs rồi deploy lại.
-  scriptURL:
-    "https://script.google.com/macros/s/AKfycbwARwmk5Mww4ja6tduJBwKzX8xMdQxK2f0An4aBr19-6JOhqPexe-fhsycRSduc65jiNQ/exec",
+  // Supabase dùng để lưu RSVP, Sổ lưu bút, và danh sách ảnh khách mời.
+  // Tạo project miễn phí tại https://supabase.com, chạy supabase/schema.sql
+  // trong SQL Editor, rồi lấy 2 giá trị bên dưới ở Project Settings > API.
+  supabase: {
+    url: "https://YOUR_PROJECT.supabase.co",
+    anonKey: "YOUR_SUPABASE_ANON_KEY",
+  },
 
   // Cloudinary dùng để lưu & tối ưu ảnh khách mời tải lên (nén/resize tự động -> web load nhanh).
   // Đăng ký miễn phí tại https://cloudinary.com rồi điền 2 giá trị bên dưới.

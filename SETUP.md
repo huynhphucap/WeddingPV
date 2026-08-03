@@ -15,7 +15,7 @@ js/                          config.js (điền cấu hình ở đây), common.j
 img/                       Ảnh của bạn (logo, ảnh cưới, QR chuyển khoản...)
 img/album/           Ảnh cưới cho mục "Album ảnh cưới của Phúc & Vy"
 music/                  Nhạc nền (NgayDauTien.mp3)
-google-apps-script/Code.gs   Backend Google Apps Script (RSVP, Sổ lưu bút, Album)
+supabase/schema.sql   Script tạo bảng + phân quyền cho Supabase (RSVP, Sổ lưu bút, Album)
 ```
 
 Nếu chưa có ảnh thật, trang vẫn chạy bình thường — chỗ nào chưa có ảnh sẽ tự hiện khung placeholder
@@ -43,23 +43,35 @@ cơ chế lazy-load (chỉ tải ảnh khi lướt tới) nhưng ảnh gốc cà
 Thả ảnh vào `img/album/01.jpg` … `img/album/10.jpg` (hoặc đổi danh sách trong
 `js/album.js`, biến `CURATED_PHOTOS`, để dùng tên file / chú thích khác, thêm hoặc bớt ảnh tùy ý).
 
-## 3. Bật tính năng RSVP / Sổ lưu bút / Album (Google Apps Script)
+## 3. Bật tính năng RSVP / Sổ lưu bút / Album (Supabase)
 
-Trang đang dùng chung 1 Google Apps Script Web App cho cả 3 tính năng. Nếu bạn đã có sẵn Apps Script
-cho RSVP/Sổ lưu bút, hãy cập nhật nó theo file `google-apps-script/Code.gs` (script mới hỗ trợ thêm
-đọc danh sách lời chúc & ảnh khách mời) — hoặc tạo mới theo các bước sau:
+Trang dùng [Supabase](https://supabase.com) (Postgres, có gói miễn phí) làm database cho cả 3 tính
+năng: RSVP, sổ lưu bút, và danh sách ảnh khách mời (file ảnh vẫn lưu ở Cloudinary — xem mục 4 — chỉ
+có URL ảnh + tên người gửi được lưu trong Supabase).
 
-1. Tạo một Google Sheet mới (trống).
-2. Vào **Extensions (Tiện ích mở rộng) > Apps Script**.
-3. Xoá code mẫu, dán toàn bộ nội dung file [`google-apps-script/Code.gs`](google-apps-script/Code.gs) vào.
-4. Bấm **Deploy > New deployment**, chọn loại **Web app**:
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-5. Bấm **Deploy**, copy URL Web App (dạng `https://script.google.com/macros/s/xxx/exec`).
-6. Mở `js/config.js`, dán URL đó vào `scriptURL`.
+1. Đăng ký / đăng nhập tại https://supabase.com, bấm **New project** (chọn tổ chức, đặt tên, tạo
+   mật khẩu database, chọn region gần Việt Nam nhất, ví dụ Singapore).
+2. Sau khi project khởi tạo xong, vào **SQL Editor > New query**, dán toàn bộ nội dung file
+   [`supabase/schema.sql`](supabase/schema.sql) vào rồi bấm **Run**. Lệnh này tạo 3 bảng
+   `rsvp`, `wishes`, `photos` và thiết lập phân quyền (Row Level Security) phù hợp:
+   - Ai cũng gửi được RSVP / lời chúc / ảnh (INSERT công khai).
+   - Lời chúc và ảnh hiển thị công khai cho mọi người xem (SELECT công khai).
+   - Danh sách RSVP **không** cho đọc công khai (giữ riêng tư thông tin khách mời) — bạn xem trong
+     **Table Editor** của Supabase.
+3. Vào **Project Settings (biểu tượng bánh răng) > API**, copy 2 giá trị:
+   - **Project URL** (dạng `https://xxxxx.supabase.co`)
+   - **anon public** key (chuỗi dài, an toàn để đưa vào code phía trình duyệt vì đã có Row Level
+     Security chặn ở bước 2 — **không dùng** khoá `service_role`)
+4. Mở `js/config.js`, điền vào:
+   ```js
+   supabase: {
+     url: "https://xxxxx.supabase.co",
+     anonKey: "eyJhbnJ...",
+   },
+   ```
 
-Script sẽ tự tạo 3 sheet con `RSVP`, `Wishes`, `Photos` khi có dữ liệu đầu tiên gửi lên — không cần
-tạo tay.
+Muốn xem lại danh sách khách đã xác nhận tham dự, lời chúc, hay ảnh đã gửi: vào Supabase Dashboard >
+**Table Editor**, chọn bảng tương ứng.
 
 ## 4. Bật tính năng khách mời tải ảnh lên (Cloudinary)
 

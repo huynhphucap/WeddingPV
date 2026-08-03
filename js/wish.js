@@ -1,8 +1,7 @@
 /* =========================================================
-   WISH.JS — Tải & hiển thị toàn bộ lời chúc từ Google Sheet
+   WISH.JS — Tải & hiển thị toàn bộ lời chúc từ Supabase
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const cfg = window.WEDDING_CONFIG || {};
   const listEl = document.getElementById("wishList");
   const refreshBtn = document.getElementById("refreshBtn");
   const countEl = document.getElementById("wishCount");
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="wish-avatar">${initials(w.name)}</div>
             <div>
               <div class="wish-name">${escapeHtml(w.name || "Ẩn danh")}</div>
-              <div class="wish-time">${formatTime(w.time)}</div>
+              <div class="wish-time">${formatTime(w.created_at)}</div>
             </div>
           </div>
           <div class="wish-message">${escapeHtml(w.message)}</div>
@@ -61,26 +60,25 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  function loadWishes() {
+  async function loadWishes() {
     listEl.innerHTML = '<div class="wish-loading"><i class="fas fa-spinner"></i><div>Đang tải lời chúc...</div></div>';
-    if (!cfg.scriptURL) {
-      listEl.innerHTML = '<div class="wish-error">Chưa cấu hình nguồn dữ liệu lời chúc.</div>';
+    if (!window.sb) {
+      listEl.innerHTML =
+        '<div class="wish-error">Chưa cấu hình Supabase. Xem SETUP.md để bật tính năng sổ lưu bút.</div>';
       return;
     }
-    fetch(`${cfg.scriptURL}?type=wishes`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (json && json.status === "success" && Array.isArray(json.data)) {
-          renderWishes(json.data.filter((w) => w.message));
-        } else {
-          throw new Error("Dữ liệu không hợp lệ");
-        }
-      })
-      .catch((err) => {
-        console.error("Lỗi tải lời chúc:", err);
-        listEl.innerHTML =
-          '<div class="wish-error">Không tải được lời chúc lúc này. Vui lòng thử lại sau, hoặc kiểm tra lại cấu hình Google Apps Script (xem SETUP.md).</div>';
-      });
+    const { data, error } = await window.sb
+      .from("wishes")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Lỗi tải lời chúc:", error);
+      listEl.innerHTML =
+        '<div class="wish-error">Không tải được lời chúc lúc này. Vui lòng thử lại sau, hoặc kiểm tra lại cấu hình Supabase (xem SETUP.md).</div>';
+      return;
+    }
+    renderWishes((data || []).filter((w) => w.message));
   }
 
   loadWishes();

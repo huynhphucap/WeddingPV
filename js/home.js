@@ -2,7 +2,6 @@
    HOME.JS — Logic riêng cho trang chủ (index.html)
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const cfg = window.WEDDING_CONFIG || {};
 
   /* ---------- Reveal cho card cô dâu / chú rể ---------- */
   const cards = document.querySelectorAll(".card");
@@ -46,40 +45,52 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- RSVP ---------- */
   const rsvpForm = document.getElementById("rsvpNewForm");
   if (rsvpForm) {
-    rsvpForm.addEventListener("submit", (e) => {
+    rsvpForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!window.sb) {
+        alert("Chức năng xác nhận tham dự chưa được cấu hình. Xem SETUP.md để bật Supabase.");
+        return;
+      }
       openModal("sendingModal");
-      fetch(cfg.scriptURL, { method: "POST", body: new FormData(rsvpForm) })
-        .then(() => {
-          closeModal("sendingModal");
-          openModal("rsvpModal");
-          rsvpForm.reset();
-        })
-        .catch((error) => {
-          closeModal("sendingModal");
-          console.error("Lỗi RSVP:", error);
-          alert("Đã xảy ra lỗi khi gửi xác nhận tham dự. Vui lòng thử lại!");
-        });
+      const { error } = await window.sb.from("rsvp").insert({
+        full_name: rsvpForm.fullName.value,
+        party: rsvpForm.party.value,
+        guest_count: Number(rsvpForm.number.value) || null,
+        note: rsvpForm.note.value,
+      });
+      closeModal("sendingModal");
+      if (error) {
+        console.error("Lỗi RSVP:", error);
+        alert("Đã xảy ra lỗi khi gửi xác nhận tham dự. Vui lòng thử lại!");
+        return;
+      }
+      openModal("rsvpModal");
+      rsvpForm.reset();
     });
   }
 
   /* ---------- Sổ lưu bút ---------- */
   const guestbookForm = document.getElementById("guestbookForm");
   if (guestbookForm) {
-    guestbookForm.addEventListener("submit", (e) => {
+    guestbookForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!window.sb) {
+        alert("Chức năng gửi lời chúc chưa được cấu hình. Xem SETUP.md để bật Supabase.");
+        return;
+      }
       openModal("sendingModal");
-      fetch(cfg.scriptURL, { method: "POST", body: new FormData(guestbookForm) })
-        .then(() => {
-          closeModal("sendingModal");
-          openModal("thankModal");
-          guestbookForm.reset();
-        })
-        .catch((error) => {
-          closeModal("sendingModal");
-          console.error("Lỗi gửi lời chúc:", error);
-          alert("Đã xảy ra lỗi khi gửi lời chúc. Vui lòng thử lại!");
-        });
+      const { error } = await window.sb.from("wishes").insert({
+        name: guestbookForm.name.value,
+        message: guestbookForm.message.value,
+      });
+      closeModal("sendingModal");
+      if (error) {
+        console.error("Lỗi gửi lời chúc:", error);
+        alert("Đã xảy ra lỗi khi gửi lời chúc. Vui lòng thử lại!");
+        return;
+      }
+      openModal("thankModal");
+      guestbookForm.reset();
     });
   }
 
