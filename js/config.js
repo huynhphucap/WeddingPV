@@ -8,7 +8,7 @@ window.WEDDING_CONFIG = {
   // trong SQL Editor, rồi lấy 2 giá trị bên dưới ở Project Settings > API.
   supabase: {
     url: "https://YOUR_PROJECT.supabase.co",
-    anonKey: "YOUR_SUPABASE_ANON_KEY",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNva2J0cWhvYW1tZ2pva21qenhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3NDU1MTQsImV4cCI6MjEwMTMyMTUxNH0.w68JUutO4LyfQ_G_tmj_4daPaL-ASupp0ljyxWW4mD0",
   },
 
   // Cloudinary dùng để lưu & tối ưu ảnh khách mời tải lên (nén/resize tự động -> web load nhanh).
