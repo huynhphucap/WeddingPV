@@ -1,0 +1,564 @@
+/* =========================================================
+   BASE.CSS — Design system dùng chung cho toàn bộ thiệp cưới
+   Tone màu: nhẹ nhàng, ấm áp (ivory / hồng phấn / vàng đồng)
+   ========================================================= */
+
+:root {
+  /* Màu nền */
+  --clr-bg: #fffaf6;
+  --clr-bg-soft: #fdf2ef;
+  --clr-bg-blush: #fbe9ec;
+  --clr-white: #ffffff;
+
+  /* Màu chính */
+  --clr-primary: #c98a94;
+  --clr-primary-dark: #a96b76;
+  --clr-primary-light: #e9c3c9;
+  --clr-gold: #c9a768;
+  --clr-gold-light: #e7d3a6;
+  --clr-sage: #93aa8b;
+  --clr-sage-dark: #728a6a;
+  --clr-info: #7ea8c9;
+
+  /* Chữ */
+  --clr-text: #4a3a3d;
+  --clr-text-light: #7d6b6e;
+  --clr-text-invert: #fffaf6;
+
+  /* Hiệu ứng */
+  --shadow-sm: 0 4px 12px rgba(150, 110, 100, 0.12);
+  --shadow-md: 0 10px 30px rgba(150, 110, 100, 0.16);
+  --shadow-lg: 0 24px 60px rgba(150, 110, 100, 0.22);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  --font-script: "Dancing Script", cursive;
+  --font-display: "Playfair Display", serif;
+  --font-body: "Montserrat", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--clr-text);
+  background: linear-gradient(180deg, var(--clr-bg-blush) 0%, var(--clr-bg) 22%, var(--clr-bg) 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ================== Hiệu ứng động khi cuộn ================== */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  will-change: transform, opacity;
+}
+
+.animate-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-80px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.slide-in-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ================== Lazy-load ảnh khi lướt tới ==================
+   Ảnh dùng data-src thay vì src. JS (common.js) sẽ quan sát viewport,
+   chỉ gán src thật khi ảnh sắp lọt vào khung nhìn -> tiết kiệm băng
+   thông, trang tải nhanh ngay từ đầu dù có nhiều ảnh nặng. */
+.lazy-img {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.04);
+  transition: opacity 0.7s var(--ease), filter 0.8s var(--ease), transform 0.8s var(--ease);
+  background: linear-gradient(135deg, var(--clr-bg-soft), var(--clr-bg-blush));
+}
+
+.lazy-img.loaded {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.lazy-img-wrap {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  background: linear-gradient(135deg, var(--clr-bg-soft), var(--clr-bg-blush));
+}
+
+.lazy-img-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1.6s infinite;
+  pointer-events: none;
+}
+
+.lazy-img-wrap.loaded::before {
+  animation: none;
+  display: none;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Ảnh lỗi / chưa có file thật -> hiện placeholder duyên dáng thay vì icon vỡ hình */
+.img-fallback {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--clr-bg-blush), var(--clr-primary-light));
+  color: var(--clr-primary-dark);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 12px;
+  filter: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.img-fallback::before {
+  content: "\f03e";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1.6rem;
+  opacity: 0.6;
+}
+
+/* ================== Trái tim bay ================== */
+.heart {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0.55;
+  z-index: 2;
+  color: var(--clr-primary-light);
+}
+
+.heart svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(180, 130, 130, 0.25));
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 0.15;
+  }
+
+  50% {
+    transform: translateY(-40px) scale(1.15) rotate(8deg);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 0.15;
+  }
+}
+
+/* ================== Modal ================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(74, 58, 61, 0.45);
+  backdrop-filter: blur(3px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--clr-info);
+  color: #fff;
+  max-width: 420px;
+  width: 100%;
+  border-radius: var(--radius-md);
+  padding: 30px;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.35s var(--ease);
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.85) translateY(10px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #fff;
+  transition: transform 0.25s var(--ease), opacity 0.25s;
+  opacity: 0.85;
+}
+
+.modal-close:hover {
+  transform: rotate(90deg) scale(1.1);
+  opacity: 1;
+}
+
+.modal-overlay.rsvp-modal,
+.modal-content.rsvp-content,
+.modal-content.thank {
+  background: linear-gradient(135deg, var(--clr-sage), var(--clr-sage-dark));
+  color: #fff;
+}
+
+.copy-modal-content {
+  background: linear-gradient(135deg, var(--clr-sage), var(--clr-sage-dark));
+  color: #fff;
+  max-width: 420px;
+  width: 100%;
+  padding: 26px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  animation: slideDown 0.4s var(--ease);
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ================== HEADER / NAV ================== */
+header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 250, 246, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 10px 24px;
+  box-shadow: 0 2px 16px rgba(150, 110, 100, 0.08);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.logo-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-family: var(--font-script);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr-primary-dark);
+}
+
+.menu-icon {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--clr-primary-dark);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  padding: 0;
+}
+
+nav .floating-btn {
+  background: transparent;
+  color: var(--clr-text);
+  box-shadow: none;
+  padding: 8px 14px;
+  font-weight: 600;
+}
+
+nav .floating-btn:hover {
+  color: var(--clr-primary-dark);
+  background: var(--clr-bg-blush);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+  nav {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: var(--clr-white);
+    width: 220px;
+    border-radius: 0 0 0 var(--radius-md);
+    box-shadow: var(--shadow-md);
+    transform: translateX(100%);
+    transition: transform 0.35s var(--ease);
+    padding: 10px;
+  }
+
+  nav.open {
+    transform: translateX(0);
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  nav .floating-btn {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+}
+
+/* ================== Buttons dùng chung ================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  background: var(--clr-white);
+  color: var(--clr-primary-dark);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.btn:hover {
+  background: var(--clr-primary-dark);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ================== Floating menu (RSVP / Lời chúc nổi) ================== */
+.floating-btn-group {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 950;
+}
+
+.floating-btn-items {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.floating-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.floating-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: var(--shadow-md);
+}
+
+.floating-toggle-btn {
+  background: linear-gradient(135deg, var(--clr-text), #6b5559);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.floating-toggle-btn:hover {
+  transform: scale(1.1) rotate(-8deg);
+}
+
+/* ================== Music control ================== */
+.music-control {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 950;
+}
+
+.music-btn {
+  background: rgba(74, 58, 61, 0.75);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.music-btn:hover {
+  transform: scale(1.06);
+  background: var(--clr-primary-dark);
+}
+
+/* ================== Footer ================== */
+footer {
+  text-align: center;
+  padding: 26px 20px;
+  background: var(--clr-bg-soft);
+  color: var(--clr-text-light);
+  margin-top: 40px;
+  font-size: 0.9rem;
+}
+
+/* ================== 3D tilt hover (dùng cho card / ảnh) ================== */
+.tilt-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.15s var(--ease), box-shadow 0.3s var(--ease);
+  will-change: transform;
+}
+
+.tilt-3d:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ================== Back link dùng chung ================== */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 30px auto 0;
+  color: var(--clr-primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+  transition: gap 0.25s var(--ease);
+}
+
+.back-link:hover {
+  gap: 12px;
+}
+
+/* ================== Scrollbar nhẹ nhàng ================== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--clr-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clr-primary-light);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-primary);
+}

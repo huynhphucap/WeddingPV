@@ -5,1613 +5,115 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thiệp Cưới - Nguyễn Huỳnh Phúc &amp; Dương Thúy Vy</title>
+  <meta name="description" content="Thiệp cưới điện tử của Nguyễn Huỳnh Phúc & Dương Thúy Vy - Thông tin lễ cưới, xác nhận tham dự, sổ lưu bút và album ảnh cưới." />
 
-  <!-- Font & Icon (Ví dụ sử dụng Google Fonts + Font Awesome) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="css/fonts-googleapis.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/fontawesome.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
-  <style>
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* RESET CSS */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Montserrat", sans-serif;
-      color: #333;
-      background: linear-gradient(to bottom, #fde7ec, #fff);
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* ================== Hiệu ứng động khi cuộn ================== */
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease-out;
-      will-change: transform, opacity;
-    }
-
-    .animate-on-scroll.active {
-      opacity: 1;
-      transform: translateY(0);
-      will-change: transform, opacity;
-    }
-
-    /* Slide-in từ bên trái (có thể dùng cho hình ảnh) */
-    .slide-in-left {
-      opacity: 0;
-      transform: translateX(-100%);
-      transition: all 0.6s ease-out;
-    }
-
-    .slide-in-left.active {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* ================== Hiệu ứng trái tim bay ================== */
-    .heart {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: url("img/heart.png") center/cover no-repeat;
-      animation: float 2s ease-in-out infinite;
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: translateY(-40px) scale(1.1);
-        opacity: 0.8;
-      }
-
-      100% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    /* ================== Modal ================== */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #2196f3;
-      color: #fff;
-      max-width: 100%;
-      width: 90%;
-      border-radius: 10px;
-      padding: 30px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      animation: scaleIn 0.3s ease;
-    }
-
-    @keyframes scaleIn {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      cursor: pointer;
-      font-size: 24px;
-      color: #fff;
-      transition: color 0.3s;
-    }
-
-    .modal-close:hover {
-      color: #ccc;
-    }
-
-    /* Modal cho RSVP (màu xanh lá) */
-    .modal-overlay.rsvp-modal {
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content.rsvp-content {
-      background: #4caf50;
-      color: #fff;
-    }
-
-    /* Modal cho Guestbook (màu xanh lá) */
-    .modal-content.thank {
-      background: #4caf50;
-      color: #fff;
-    }
-
-    /* ================== Modal cho nút copy ================== */
-    .copy-modal-content {
-      background: linear-gradient(135deg, #4caf50, #81c784);
-      /* Gradient xanh lá */
-      color: #fff;
-      max-width: 100%;
-      width: 90%;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      animation: slideDown 0.5s ease-out;
-    }
-
-    /* Animation slide down */
-    @keyframes slideDown {
-      from {
-        transform: translateY(-30px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    /* Nút đóng modal */
-    .copy-modal-content .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      cursor: pointer;
-      font-size: 24px;
-      color: #fff;
-      transition: color 0.3s;
-    }
-
-    .copy-modal-content .modal-close:hover {
-      color: #ccc;
-    }
-
-    /* ================== HEADER ================== */
-    header {
-      width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 999;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 10px 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo img {
-      height: 40px;
-      width: auto;
-      object-fit: cover;
-      margin-right: 8px;
-    }
-
-    .logo-text {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #e91e63;
-    }
-
-    .menu-icon {
-      display: none;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-      padding: 20px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    nav a:hover {
-      color: #e91e63;
-    }
-
-    @media (max-width: 700px) {
-      nav {
-        position: absolute;
-        top: 60px;
-        padding: 10px;
-        right: 0;
-        background: #fff;
-        width: 200px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        transform: translateX(100%);
-        transition: transform 0.3s;
-        animation: none;
-      }
-
-      nav.open {
-        transform: translateX(0);
-      }
-
-      nav ul {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .menu-icon {
-        display: block;
-      }
-    }
-
-    /* ================== HERO SECTION ================== */
-    /* ================== Hiệu ứng hình nền động cho Hero ================== */
-    .hero {
-      background: url("img/couple4.jpg") center/cover no-repeat;
-      animation: zoomBg 8s ease infinite;
-      overflow: hidden;
-      /* Ngăn nội dung bên ngoài container hiển thị */
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      padding-top: 300px;
-      padding-bottom: 300px;
-      /* Tạo khoảng cách ở cuối HERO */
-    }
-
-    @keyframes zoomBg {
-
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.05);
-      }
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 0;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      color: #fff;
-      max-width: 100%;
-      margin: 250px auto 0 auto;
-      /* Tăng khoảng cách ở trên, ví dụ 100px */
-      padding: 20px;
-    }
-
-    .hero-content h1 {
-      font-family: "Dancing Script", cursive;
-      font-size: 3rem;
-      margin-bottom: 10px;
-      color: #ffd700;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-    }
-
-    .hero-content h2 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-    }
-
-    .hero-content p {
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    }
-
-    .btn-group {
-      display: flex;
-      /* dùng flexbox */
-      flex-wrap: wrap;
-      /* cho phép xuống dòng nếu không đủ chỗ */
-      justify-content: center;
-      /* canh giữa */
-      gap: 10px;
-      /* khoảng cách giữa các nút */
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-      /* tránh xuống dòng chữ trong nút */
-      padding: 10px 16px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      background: #fff;
-      color: #e91e63;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-      transition: background 0.3s, transform 0.3s;
-    }
-
-    .btn:hover {
-      background: #f8f8f8;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    /* ================== CONTENT SECTION ================== */
-    .content-section {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      text-align: center;
-      margin-top: 100px;
-    }
-
-    .content-section h3 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      position: relative;
-    }
-
-    .content-section h3::after {
-      content: "";
-      display: block;
-      width: 60px;
-      height: 2px;
-      background: #e91e63;
-      margin: 10px auto 0;
-    }
-
-    .content-section p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #555;
-    }
-
-    /* ================== RSVP SECTION (New) ================== */
-    .rsvp-section {
-      background: #fceef3;
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .rsvp-wrapper {
-      max-width: 100%;
-      margin: 0 auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-
-    .couple-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      margin: 0 auto 15px;
-      display: block;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .qr-code {
-      width: 50%;
-      height: 50%;
-      object-fit: cover;
-      margin: 0 auto 15px;
-      display: block;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .rsvp-wrapper h2 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      font-family: "Dancing Script", cursive;
-    }
-
-    .rsvp-subtitle {
-      font-size: 1rem;
-      color: #555;
-      margin-bottom: 20px;
-      max-width: 100%;
-      margin: 0 auto 20px;
-      line-height: 1.4;
-    }
-
-    .rsvp-new-form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      text-align: left;
-    }
-
-    .rsvp-new-form .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .rsvp-new-form label {
-      font-weight: 500;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .rsvp-new-form input[type="text"],
-    .rsvp-new-form select,
-    .rsvp-new-form textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    .rsvp-new-form button {
-      align-self: center;
-      background: #e91e63;
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s, transform 0.3s;
-      margin-top: 10px;
-    }
-
-    .rsvp-new-form button:hover {
-      background: #d81b60;
-      transform: scale(1.03);
-    }
-
-    /* ================== GUESTBOOK SECTION ================== */
-    .guestbook-section {
-      background: #fff;
-      padding: 40px 20px;
-      margin: 40px auto;
-      max-width: 100%;
-    }
-
-    .guestbook-container {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      text-align: center;
-    }
-
-    .guestbook-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .guestbook-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-    }
-
-    .guestbook-container h1 {
-      font-size: 2rem;
-      color: #e91e63;
-      margin: 0;
-    }
-
-    .guestbook-description {
-      color: #555;
-      font-size: 1rem;
-      margin: 15px auto 20px;
-      max-width: 100%;
-      line-height: 1.4;
-    }
-
-    .guestbook-form {
-      text-align: left;
-      margin: 0 auto;
-      max-width: 100%;
-    }
-
-    .guestbook-form .form-group {
-      margin-bottom: 15px;
-    }
-
-    .guestbook-form label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
-      color: #333;
-    }
-
-    .guestbook-form input,
-    .guestbook-form textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .guestbook-form textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .guestbook-form button {
-      background: #e91e63;
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-      width: 100%;
-    }
-
-    .guestbook-form button:hover {
-      background: #d81b60;
-      transform: scale(1.02);
-    }
-
-    .guestbook-form button {
-      background: #e91e63;
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-      width: 100%;
-    }
-
-    .view-all-link {
-      display: block;
-      margin-top: 20px;
-      color: #e91e63;
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    .view-all-link:hover {
-      text-decoration: underline;
-    }
-
-    /* ================== FOOTER ================== */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #f3f3f3;
-      margin-top: 40px;
-    }
-
-    /* ===== Countdown Styles ===== */
-    .countdown-container {
-      text-align: center;
-      max-width: 100%;
-      margin: 40px auto;
-      /* canh giữa */
-      padding: 10px;
-      background: #fff8f8;
-      /* nền nhẹ, tùy chỉnh */
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Tiêu đề ngày, subtitle, và note */
-    .countdown-date {
-      font-family: "Dancing Script", cursive;
-      font-size: 25px;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .countdown-subtitle {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #e91e63;
-    }
-
-    .countdown-note {
-      font-size: 1rem;
-      color: #555;
-      margin-bottom: 20px;
-      max-width: 400px;
-      margin: 0 auto 20px auto;
-      line-height: 1.4;
-    }
-
-    /* Wrapper chứa các trái tim */
-    .countdown-heart-wrapper {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    /* Mỗi trái tim hiển thị số countdown */
-    .countdown-heart {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      background: #fff;
-      border: 2px solid #ff8a8a;
-      /* viền hồng */
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .countdown-heart:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Tạo hình trái tim cho phần trang trí bằng ::before và ::after */
-    .countdown-heart::before,
-    .countdown-heart::after {
-      content: "";
-      position: absolute;
-      width: 40px;
-      height: 70px;
-      background: #ffc0cb;
-      /* Màu hồng nhạt */
-      border: 2px solid #ff8a8a;
-      border-radius: 40px 40px 0 0;
-      z-index: -1;
-    }
-
-    .countdown-heart::before {
-      top: 0;
-      left: 10px;
-      transform: rotate(-45deg);
-    }
-
-    .countdown-heart::after {
-      top: 0;
-      right: 10px;
-      transform: rotate(45deg);
-    }
-
-    /* Số hiển thị (ngày, giờ, phút, giây) */
-    .heart-value {
-      position: relative;
-      z-index: 1;
-      /* để text nổi trên shape trái tim */
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #e91e63;
-      margin-bottom: 2px;
-    }
-
-    /* Nhãn (Ngày, Giờ, Phút, Giây) - phong cách sống động */
-    .heart-label {
-      position: relative;
-      z-index: 1;
-      font-size: 1rem;
-      /* Dùng gradient làm màu chữ */
-      background: linear-gradient(45deg, red, #d81b60);
-      /* Add the standard property 'background-clip' for compatibility */
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-
-      /* Tạo bóng chữ nhẹ */
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-      /* Tạo khoảng cách giữa chữ */
-      letter-spacing: 1px;
-
-      /* Tinh chỉnh khoảng cách, canh lề */
-      margin-top: 4px;
-      margin-bottom: 2px;
-
-      /* Hiệu ứng mượt khi hover */
-      transition: transform 0.3s, filter 0.3s;
-    }
-
-    /* Khi rê chuột vào nhãn, phóng to nhẹ và tăng độ sáng */
-    .heart-label:hover {
-      transform: scale(1.1);
-      filter: brightness(1.2);
-    }
-
-    /* Đáp ứng màn hình nhỏ */
-    @media (max-width: 480px) {
-      .countdown-heart-wrapper {
-        gap: 10px;
-      }
-
-      .countdown-heart {
-        width: 60px;
-        height: 60px;
-      }
-
-      .countdown-heart::before,
-      .countdown-heart::after {
-        width: 30px;
-        height: 50px;
-      }
-
-      .heart-value {
-        font-size: 1.1rem;
-      }
-
-      .heart-label {
-        font-size: 0.8rem;
-      }
-    }
-
-    /* Copy số tài khoản */
-    #copyBtn {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #fff;
-      border: 2px solid #2196f3;
-      color: #2196f3;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    #copyBtn:hover {
-      background: #2196f3;
-      color: #fff;
-    }
-
-    .album-btn-wrapper {
-      text-align: center;
-      margin: 20px 0;
-    }
-
-    .album-btn {
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      background: linear-gradient(45deg, #e91e63, #d81b60);
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 30px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .album-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Responsive: điều chỉnh kích thước chữ và padding cho thiết bị nhỏ */
-    @media (max-width: 576px) {
-      .album-btn {
-        font-size: 1rem;
-        padding: 10px 20px;
-      }
-    }
-
-    /* Music */
-    /* Container cho nút điều khiển nhạc, cố định ở góc trái dưới */
-    .music-control {
-      position: fixed;
-      bottom: 10px;
-      left: 20px;
-      z-index: 1000;
-    }
-
-    /* Nút bật/tắt nhạc */
-    .music-btn {
-      background-color: #726f6f;
-      /* Màu nền */
-      color: #fff;
-      /* Màu chữ */
-      padding: 10px 20px;
-      /* Khoảng đệm */
-      border-radius: 30px;
-      /* Bo tròn */
-      border: none;
-      /* Bỏ viền */
-      cursor: pointer;
-      /* Con trỏ chỉ tay */
-      font-size: 16px;
-      display: inline-flex;
-      align-items: center;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .music-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Bao ngoài của Couple Section */
-    .couple-section {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 20px;
-      flex-wrap: wrap;
-      /* Cho phép card xuống dòng khi không đủ chỗ */
-    }
-
-    /* Các card chứa hình và thông tin */
-    .card {
-      flex: 1 1 45%;
-      max-width: 45%;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      position: relative;
-      /* Khởi tạo trạng thái ẩn và dịch chuyển xuống */
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-
-    @keyframes flyInFromLeft {
-      0% {
-        opacity: 0;
-        transform: translateX(-100%);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes flyInFromRight {
-      0% {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    /* Khi card được thêm class in-view, hiệu ứng chuyển động bay vào */
-    .card.in-view {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Khi card nằm trong viewport và có class "left" */
-    .card.in-view.left {
-      animation: flyInFromLeft 0.8s ease forwards;
-    }
-
-    /* Khi card nằm trong viewport và có class "right" */
-    .card.in-view.right {
-      animation: flyInFromRight 0.8s ease forwards;
-    }
-
-    /* Khi phần tử cuộn vào (được thêm class "visible" bởi JS) */
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    /* Hiệu ứng hover: phóng to nhẹ (có thể kết hợp với translate nếu cần) */
-    .card.visible:hover {
-      transform: translateY(0) scale(1.05);
-      cursor: pointer;
-    }
-
-    /* Đảm bảo hình ảnh luôn vừa khung card */
-    .card img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Khung chứa chữ dưới hình */
-    .card-text {
-      padding: 15px;
-      text-align: center;
-      background-color: #fff;
-    }
-
-    .card-text h2 {
-      font-size: 1.5em;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    /* Thiết kế thẻ p với kiểu chữ và màu sắc đẹp */
-    .card-text p {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #d81b60;
-      /* Màu cam ấm áp */
-      font-family: "Times New Roman", Times, serif;
-      /* Kiểu chữ thư pháp */
-      margin: 0;
-      letter-spacing: 1px;
-      /* Tăng khoảng cách giữa các ký tự */
-      text-transform: uppercase;
-      /* Chữ in hoa */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      /* Hiệu ứng đổ bóng chữ */
-      font-style: italic;
-      /* In nghiêng */
-    }
-
-    .card-description {
-      padding: 20px;
-      background-color: #f9f9f9;
-      /* Màu nền nhẹ */
-      border-top: 2px solid #d35400;
-      /* Đường viền trên màu cam ấm */
-      border-bottom: 2px solid #d35400;
-      /* Đường viền dưới màu cam ấm */
-      text-align: center;
-      /* Căn giữa nội dung */
-      margin: 20px auto;
-      /* Lề trên dưới và căn giữa theo chiều ngang */
-      max-width: 90%;
-      /* Giới hạn chiều rộng cho card */
-      border-radius: 8px;
-      /* Bo tròn các góc */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      /* Hiệu ứng đổ bóng nhẹ */
-    }
-
-    .card-description p {
-      font-family: 'Playfair Display', serif;
-      /* Font chữ thư pháp */
-      font-size: 1.2em;
-      /* Kích thước chữ */
-      line-height: 1.5;
-      /* Khoảng cách dòng */
-      color: #333;
-      /* Màu chữ */
-      margin: 0;
-      /* Loại bỏ margin mặc định */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-      /* Đổ bóng chữ nhẹ */
-    }
-
-    /* Responsive: Khi màn hình nhỏ, card chiếm 100% chiều rộng */
-    @media (max-width: 768px) {
-      .card {
-        flex: 1 1 100%;
-        max-width: 100%;
-      }
-    }
-
-    /* Phần Save The Date */
-    .save-the-date-section {
-      max-width: 100%;
-      margin: 0 auto;
-      padding: 60px 20px;
-      text-align: center;
-      position: relative;
-      background-color: #fdf7f0;
-      /* Màu nền nhẹ */
-      /* Bạn có thể thêm background-image cho toàn bộ section nếu muốn */
-      background-image: url('img/couple1.jpg');
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-size: cover;
-
-    }
-
-    /* Trang trí ở góc trái: sử dụng pseudo-element ::before */
-    .save-the-date-section::before {
-      content: "";
-      position: absolute;
-      left: 10px;
-      width: 100px;
-      /* Điều chỉnh kích thước */
-      height: 100px;
-      background-image: url('img/line-art-left.png');
-      /* Đường dẫn ảnh line-art bên trái */
-      background-size: contain;
-      background-repeat: no-repeat;
-      opacity: 0.5;
-      /* Điều chỉnh độ mờ, tạo hiệu ứng nhẹ nhàng */
-    }
-
-    /* Trang trí ở góc phải: sử dụng pseudo-element ::after */
-    .save-the-date-section::after {
-      content: "";
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 100px;
-      height: 100px;
-      background-image: url('img/line-art-right.png');
-      /* Đường dẫn ảnh line-art bên phải */
-      background-size: contain;
-      background-repeat: no-repeat;
-      opacity: 0.5;
-    }
-
-    /* Ảnh hoa bên trái */
-    .save-the-date-section::before {
-      left: 0;
-      background-image: url('img/vien-hoa.png');
-      /* Đường dẫn ảnh hoa line-art bên trái */
-    }
-
-    /* Ảnh hoa bên phải */
-    .save-the-date-section::after {
-      right: 0;
-      background-image: url('img/vien-hoa.png');
-      /* Đường dẫn ảnh hoa line-art bên phải */
-    }
-
-    .big-title {
-      font-family: 'Playfair Display', serif;
-      /* Sử dụng font sang trọng */
-      font-size: 3rem;
-      color: #ea5785;
-      /* Màu hồng pastel */
-      margin-bottom: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-      position: relative;
-      transition: transform 0.3s ease, text-shadow 0.3s ease;
-    }
-
-    /* Underline tinh tế dưới tiêu đề */
-    .big-title::after {
-      content: "";
-      position: absolute;
-      bottom: -8px;
-      /* Điều chỉnh khoảng cách giữa underline và chữ */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      /* Độ dài underline */
-      height: 3px;
-      /* Độ dày underline */
-      background: #ea5785;
-      border-radius: 2px;
-      opacity: 0.8;
-    }
-
-    /* Hiệu ứng hover: phóng to nhẹ kèm tăng độ bóng của chữ */
-    .big-title:hover {
-      transform: scale(1.05);
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
-    }
-
-    .couple-names {
-      font-family: 'Cinzel Decorative', serif;
-      font-size: 2rem;
-      color: #2d6d4b;
-      /* Màu xanh lá nhạt */
-      margin-bottom: 10px;
-      position: relative;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, text-shadow 0.3s ease;
-    }
-
-    .couple-names:hover {
-      transform: scale(1.05);
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Pseudo-element ::before dùng để chèn icon trái tim phía trên tên */
-    .couple-names::before {
-      content: "♥";
-      color: #f28eb2;
-      /* Màu hồng nhẹ ban đầu */
-      position: absolute;
-      left: 50%;
-      top: -1.5em;
-      /* Vị trí đặt trái tim phía trên tên */
-      transform: translateX(-50%);
-      font-size: 1.5rem;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
-
-    /* Hiệu ứng hover cho icon trái tim */
-    .couple-names:hover::before {
-      transform: translateX(-50%) scale(1.2);
-      color: #ea5785;
-      /* Thay đổi sang màu hồng đậm khi hover */
-    }
-
-    .wedding-date {
-      font-size: 1.1rem;
-      color: #555;
-      margin-bottom: 30px;
-    }
-
-    /* Khu vực hiển thị 3 ảnh */
-    .photo-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    .photo-gallery img {
-      width: 100%;
-      max-width: 100%;
-      /* Mỗi ảnh tối đa 250px, tuỳ chỉnh */
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      object-fit: cover;
-      transition: transform 0.3s;
-    }
-
-    .photo-gallery img:hover {
-      transform: scale(1.03);
-    }
-
-    /* Responsive cho màn hình nhỏ */
-    @media (max-width: 576px) {
-      .big-title {
-        font-size: 2.2rem;
-      }
-
-      .couple-names {
-        font-size: 1.6rem;
-      }
-
-      .photo-gallery img {
-        max-width: 100%;
-      }
-    }
-
-    .icon-container {
-      position: relative;
-      right: 10px;
-      bottom: 10px;
-      display: flex;
-      gap: 8px;
-    }
-
-    .icon-bulb,
-    .icon-emoji {
-      cursor: pointer;
-      font-size: 20px;
-      opacity: 0.6;
-      transition: transform 0.2s, opacity 0.2s;
-    }
-
-    .icon-bulb:hover,
-    .icon-emoji:hover {
-      transform: scale(1.2);
-      opacity: 1;
-    }
-
-    /* Emoji Picker container */
-    .emoji-picker-container {
-      position: absolute;
-      background: #ffffff;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      /* Điều chỉnh vị trí của container theo nhu cầu */
-      top: 100%;
-      /* ngay dưới text area */
-      left: 0;
-      width: auto;
-    }
-
-    /* Các emoji trong picker */
-    .emoji-picker-container .emoji {
-      font-size: 24px;
-      margin: 5px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .emoji-picker-container .emoji:hover {
-      transform: scale(1.2);
-    }
-
-    /* suggestionBox ẩn mặc định */
-    .suggestion-box {
-      display: none;
-      background: #fdfdfd;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-      border-radius: 6px;
-      padding: 10px;
-      position: relative;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* suggestionBox list style */
-    .suggestion-box ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .suggestion-box li {
-      padding: 8px;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-      transition: background-color 0.2s;
-    }
-
-    .suggestion-box li:hover {
-      background: #f1f1f1;
-    }
-
-    /* Container cho nhóm nút */
-    /* Container nhóm nút nổi - luôn ở bên phải giữa màn hình */
-    .floating-btn-group {
-      position: fixed;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      /* Căn nút toggle về bên phải */
-      gap: 10px;
-      z-index: 9999;
-    }
-
-    /* Nhóm các nút chính */
-    .floating-btn-items {
-      display: none;
-      /* Ban đầu ẩn */
-      flex-direction: column;
-      gap: 10px;
-      transition: opacity 0.3s ease;
-    }
-
-    /* Kiểu cho từng nút chính */
-    .floating-btn {
-      width: 100%;
-      /* Ví dụ button sẽ luôn có chiều ngang 120px */
-      justify-content: center;
-      /* Giúp nội dung button căn giữa */
-      background-color: #c0392b;
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      padding: 10px 12px;
-      font-size: 14px;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      display: flex;
-      align-items: center;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .floating-btn i {
-      margin-right: 6px;
-    }
-
-    .floating-btn:hover {
-      background-color: #e74c3c;
-      transform: translateY(-2px);
-    }
-
-    /* Nút toggle chung */
-    .floating-toggle-btn {
-      background-color: #34495e;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .floating-toggle-btn:hover {
-      background-color: #2c3e50;
-      transform: scale(1.1);
-    }
-
-    /* Calendar */
-    /***************
-  Khung chung cho phần lịch
-***************/
-    .calendar-section {
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      max-width: 700px;
-      /* Chiều rộng tối đa, tuỳ chỉnh */
-      margin: 0 auto;
-      /* Căn giữa trang */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    /***************
-  Phần header: Chọn tháng/năm, nút “HÔM NAY”
-***************/
-    .calendar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-      background-color: #eceaea;
-    }
-
-    /* Combo chọn tháng, năm */
-    .month-select,
-    .year-select {
-      height: 50px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 0 8px;
-      background-color: #fff;
-      font-size: 14px;
-    }
-
-    /* Nút “HÔM NAY” */
-    .today-btn {
-      height: 50px;
-      background-color: #e3f9e3;
-      /* Nền xanh nhạt */
-      color: #28a745;
-      /* Màu chữ xanh */
-      border: 1px solid #28a745;
-      /* Viền màu xanh */
-      border-radius: 4px;
-      /* Bo góc vừa phải */
-      padding: 6px 12px;
-      /* Khoảng cách trong */
-      font-size: 14px;
-      /* Kích thước chữ */
-      font-weight: bold;
-      /* Chữ đậm */
-      text-transform: uppercase;
-      /* In hoa chữ */
-      cursor: pointer;
-      /* Con trỏ chỉ tay khi hover */
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .today-btn:hover {
-      /* Khi hover, nền hơi đậm hơn, kèm hiệu ứng bóng nhẹ */
-      background-color: #d2f0d2;
-      box-shadow: 0 0 3px rgba(40, 167, 69, 0.3);
-    }
-
-    /***************
-  Bảng lịch
-***************/
-    .calendar-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      table-layout: fixed;
-      /* Mỗi cột chia đều */
-    }
-
-    /* Header của bảng (các ngày trong tuần) */
-    .calendar-table th {
-      background-color: #f8f8f8;
-      padding: 10px;
-      font-weight: 600;
-      border-bottom: 1px solid #ddd;
-      color: #333;
-      font-size: 0.8rem;
-      border: 4px solid #eceaea;
-    }
-
-    /* Các ô ngày */
-    .calendar-table td {
-      padding: 8px;
-      border-bottom: 1px solid #eee;
-      vertical-align: middle;
-      position: relative;
-      /* Dùng nếu muốn chèn icon float */
-      color: #333;
-      font-size: 2rem;
-      border: 4px solid #eceaea;
-    }
-
-    /* Khi muốn bôi màu ô ngày đặc biệt */
-    .calendar-table td.highlight {
-      background-color: #fff7dd;
-    }
-
-    /***************
-  Icon trái tim, nhẫn cưới, ...
-***************/
-    .heart-icon {
-      color: red;
-      /* Màu icon trái tim */
-      margin-right: 4px;
-    }
-
-    .wedding-icon {
-      color: #ea5785;
-      /* Màu icon nhẫn cưới (như hồng) */
-      font-size: 16px;
-      /* Tùy chỉnh kích thước */
-    }
-
-    /***************
-  Phần ghi chú dưới lịch
-***************/
-    .calendar-footnote {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 14px;
-      color: #555;
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;1,500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/home.css" />
 </head>
 
 <body>
-  <!-- Container cho nút bật/tắt nhạc -->
+  <!-- Nút bật/tắt nhạc -->
   <div class="music-control">
     <button id="musicToggle" class="music-btn">
       <i class="fas fa-volume-mute"></i> | Bật nhạc
     </button>
   </div>
 
-  <!-- Thẻ audio ẩn (không hiển thị giao diện điều khiển) -->
-  <audio id="bgMusic">
+  <audio id="bgMusic" loop preload="none">
     <source src="music/NgayDauTien.mp3" type="audio/mpeg" />
     Trình duyệt của bạn không hỗ trợ âm thanh.
   </audio>
-  <!-- MODAL cho Guestbook Sổ lưu bút-->
+
+  <!-- MODAL: Sổ lưu bút -->
   <div class="modal-overlay" id="thankModal">
     <div class="modal-content thank">
-      <span class="modal-close" id="modalClose">&times;</span>
+      <span class="modal-close">&times;</span>
       <h2>Đã gửi lời chúc thành công!</h2>
       <p>Cảm ơn bạn đã gửi lời chúc đến hai vợ chồng.</p>
     </div>
   </div>
 
-  <!-- MODAL cho RSVP xác nhận-->
+  <!-- MODAL: RSVP -->
   <div class="modal-overlay rsvp-modal" id="rsvpModal">
     <div class="modal-content rsvp-content">
-      <span class="modal-close" id="rsvpModalClose">&times;</span>
+      <span class="modal-close">&times;</span>
       <h2>Cảm ơn bạn!</h2>
       <p>Chúng tôi rất vui khi bạn đã xác nhận tham dự đám cưới.</p>
+    </div>
+  </div>
+
+  <!-- MODAL: Đang gửi -->
+  <div class="modal-overlay" id="sendingModal">
+    <div class="modal-content">
+      <h2>Đang gửi...</h2>
+      <p>Vui lòng đợi trong giây lát.</p>
+    </div>
+  </div>
+
+  <!-- MODAL: Chuyển khoản -->
+  <div class="modal-overlay" id="transferModal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Thông tin chuyển khoản</h2>
+      <p><strong>Ngân hàng:</strong> BIDV</p>
+      <p><strong>Số tài khoản:</strong> <span id="accountNumber">6612617033</span></p>
+      <p><strong>Tên chủ tài khoản:</strong> Nguyễn Huỳnh Phúc</p>
+      <p><strong>Nội dung chuyển khoản:</strong> Mừng cưới Phúc và Vy</p>
+      <button id="copyBtn" class="btn">Copy thông tin tài khoản</button>
+      <div class="qr-code-wrap">
+        <span class="lazy-img-wrap">
+          <img class="lazy-img qr-code" data-src="img/qr-ck.jpg" alt="QR chuyển khoản mừng cưới" />
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Copy thành công -->
+  <div class="modal-overlay" id="copyModal">
+    <div class="modal-content copy-modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Số tài khoản đã được copy!</h2>
+      <p>Vui lòng dán vào ứng dụng chuyển khoản của bạn.</p>
     </div>
   </div>
 
   <!-- HEADER -->
   <header>
     <div class="logo">
-      <img src="img/couple4.jpg" alt="Logo P&V" />
-      <div class="logo-text">P&V</div>
+      <span class="logo-img-wrap lazy-img-wrap">
+        <img class="lazy-img" data-src="img/couple4.jpg" alt="Logo P&V" />
+      </span>
+      <div class="logo-text">P&amp;V</div>
     </div>
     <div class="menu-icon" onclick="toggleMenu()">
       <i class="fas fa-bars"></i>
     </div>
     <nav id="navbar">
       <ul>
-        <li>
-          <button class="floating-btn" data-scroll="hero">
-            <i class="fas fa-check-circle"></i> Trang chủ
-          </button>
-        </li>
-        <li>
-          <button class="floating-btn" data-scroll="info">
-            <i class="fas fa-check-circle"></i> Thông tin
-          </button>
-        </li>
-        <li>
-          <button class="floating-btn" data-scroll="rsvp">
-            <i class="fas fa-check-circle"></i> Xác nhận tham dự
-          </button>
-        </li>
-        <li>
-          <button class="floating-btn" data-scroll="guestbook">
-            <i class="fas fa-check-circle"></i> Sổ lưu bút
-          </button>
-        </li>
-
-        <!-- <li><a href="#hero">Trang chủ</a></li>
-        <li><a href="#info">Thông tin</a></li>
-        <li><a href="#rsvp">Tham dự</a></li>
-        <li><a href="#guestbook">Sổ Lưu Bút</a></li> -->
+        <li><button class="floating-btn" data-scroll="hero"><i class="fas fa-house"></i> Trang chủ</button></li>
+        <li><button class="floating-btn" data-scroll="info"><i class="fas fa-heart"></i> Thông tin</button></li>
+        <li><button class="floating-btn" data-scroll="rsvp"><i class="fas fa-check-circle"></i> Xác nhận</button></li>
+        <li><button class="floating-btn" data-scroll="guestbook"><i class="fas fa-feather"></i> Lưu bút</button></li>
       </ul>
     </nav>
   </header>
-  <!-- SAVE THE DATE -->
-  <section class="save-the-date-section">
-    <h1 class="big-title">SAVE THE DATE</h1>
-    <div class="couple-names">Nguyễn Huỳnh Phúc<br /> &amp; <br />Dương Thúy Vy</div>
-    <p class="wedding-date">Chúng mình cưới 2025</p>
 
-    <!-- Dải ảnh minh hoạ -->
-    <!-- <div class="photo-gallery">
-      <img src="img/couple1.jpg" alt="Ảnh cưới 1">
-      <img src="img/couple2.jpg" alt="Ảnh cưới 2">
-      <img src="img/couple3.jpg" alt="Ảnh cưới 3">
-    </div> -->
+  <!-- SAVE THE DATE -->
+  <section class="save-the-date-section" data-bg-src="img/couple1.jpg">
+    <h1 class="big-title">Save the Date</h1>
+    <div class="couple-names">Nguyễn Huỳnh Phúc<br />&amp;<br />Dương Thúy Vy</div>
+    <p class="wedding-date">Chúng mình cưới nhau vào năm 2025</p>
   </section>
-  <!-- HERO SECTION -->
-  <section class="hero" id="hero">
+
+  <!-- HERO / COUNTDOWN -->
+  <section class="hero" id="hero" data-bg-src="img/couple4.jpg">
     <div class="hero-content animate-on-scroll">
-      <!-- Countdown Section -->
       <div class="countdown-container" id="countdownContainer">
         <p class="countdown-note">Lễ hỏi 13/7/2025</p>
         <p class="countdown-note">Lễ cưới nhà gái</p>
@@ -1620,175 +122,113 @@
         <h3 class="countdown-date">Ngày 12 Tháng 10 năm 2025</h3>
         <p class="countdown-subtitle">Save the Date</p>
         <p class="countdown-note">
-          Một lời chúc của bạn chắc chắn sẽ làm cho đám cưới của chúng tôi có
-          thêm một niềm hạnh phúc!
+          Một lời chúc của bạn chắc chắn sẽ làm cho đám cưới của chúng tôi có thêm một niềm hạnh phúc!
         </p>
         <div class="countdown-heart-wrapper">
-          <div class="countdown-heart">
-            <div class="heart-value" id="days">358</div>
-            <div class="heart-label">Ngày</div>
-          </div>
-          <div class="countdown-heart">
-            <div class="heart-value" id="hours">21</div>
-            <div class="heart-label">Giờ</div>
-          </div>
-          <div class="countdown-heart">
-            <div class="heart-value" id="minutes">55</div>
-            <div class="heart-label">Phút</div>
-          </div>
-          <div class="countdown-heart">
-            <div class="heart-value" id="seconds">39</div>
-            <div class="heart-label">Giây</div>
-          </div>
+          <div class="countdown-heart"><div class="heart-value" id="days">0</div><div class="heart-label">Ngày</div></div>
+          <div class="countdown-heart"><div class="heart-value" id="hours">0</div><div class="heart-label">Giờ</div></div>
+          <div class="countdown-heart"><div class="heart-value" id="minutes">0</div><div class="heart-label">Phút</div></div>
+          <div class="countdown-heart"><div class="heart-value" id="seconds">0</div><div class="heart-label">Giây</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section riêng cho Lịch -->
+  <!-- LỊCH -->
   <section class="calendar-section">
     <div class="calendar-header">
-      <select class="month-select">
-        <option>Tháng 10</option>
-      </select>
-      <select class="year-select">
-        <option>2025</option>
-      </select>
+      <select class="month-select"><option>Tháng 10</option></select>
+      <select class="year-select"><option>2025</option></select>
       <button class="today-btn">HÔM NAY</button>
     </div>
-
     <table class="calendar-table">
       <thead>
         <tr>
-          <th>THỨ HAI</th>
-          <th>THỨ BA</th>
-          <th>THỨ TƯ</th>
-          <th>THỨ NĂM</th>
-          <th>THỨ SÁU</th>
-          <th>THỨ BẢY</th>
-          <th>CHỦ NHẬT</th>
+          <th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>T6</th><th>T7</th><th>CN</th>
         </tr>
       </thead>
       <tbody>
+        <tr><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>7</td>
-          <td>8</td>
-          <td>9</td>
-          <td>10</td>
+          <td>6</td><td>7</td><td>8</td><td>9</td><td>10</td>
           <td class="highlight">11<span class="wedding-icon">💍</span></td>
           <td class="highlight">12<span class="wedding-icon">💍</span></td>
         </tr>
-        <tr>
-          <td>13</td>
-          <td>14</td>
-          <td>15</td>
-          <td>16</td>
-          <td>17</td>
-          <td>18</td>
-          <td>19</td>
-        </tr>
-        <tr>
-          <td>20</td>
-          <td>21</td>
-          <td>22</td>
-          <td>23</td>
-          <td>24</td>
-          <td>25</td>
-          <td>26</td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>28</td>
-          <td>29</td>
-          <td>30</td>
-          <td>31</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <!-- Thêm các tuần khác -->
+        <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+        <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>
+        <tr><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td></tr>
       </tbody>
     </table>
-
     <div class="calendar-footnote">
-      Chủ Nhật, Ngày 12/10/2025
+      <span class="heart-icon">♥</span>Chủ Nhật, Ngày 12/10/2025 - Lễ cưới nhà trai
     </div>
   </section>
 
-  <!-- Floating Button Group -->
+  <!-- Nhóm nút nổi -->
   <div class="floating-btn-group">
-    <!-- Nhóm nút chính: hiển thị khi mở -->
     <div class="floating-btn-items">
-      <button class="floating-btn" data-scroll="rsvp">
-        <i class="fas fa-check-circle"></i> Xác nhận tham dự
-      </button>
-      <button class="floating-btn" data-scroll="guestbook">
-        <i class="fas fa-envelope"></i> Gửi lời chúc
-      </button>
+      <button class="floating-btn" data-scroll="rsvp"><i class="fas fa-check-circle"></i> Xác nhận tham dự</button>
+      <button class="floating-btn" data-scroll="guestbook"><i class="fas fa-envelope"></i> Gửi lời chúc</button>
     </div>
-
+    <button class="floating-toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></button>
   </div>
+
   <!-- THÔNG TIN -->
   <section class="content-section animate-on-scroll" id="info">
     <h3>Về Chúng Tôi</h3>
     <p>
-      Chúng tôi vô cùng hạnh phúc khi được thông báo đến bạn bè, người thân về
-      ngày trọng đại này. Rất mong nhận được sự hiện diện và lời chúc phúc của
-      tất cả mọi người!
+      Chúng tôi vô cùng hạnh phúc khi được thông báo đến bạn bè, người thân về ngày trọng đại này.
+      Rất mong nhận được sự hiện diện và lời chúc phúc của tất cả mọi người!
     </p>
   </section>
-  <!-- Couple Section: Hình cô dâu và chú rể -->
+
+  <!-- Cô dâu / chú rể -->
   <section class="couple-section">
-    <!-- Card cô dâu -->
-    <div class="card bride">
-      <img src="img/per22.jpg" alt="Hình Cô Dâu" />
+    <div class="card bride tilt-3d">
+      <span class="lazy-img-wrap">
+        <img class="lazy-img" data-src="img/per22.jpg" alt="Hình Cô Dâu" />
+      </span>
       <div class="card-text">
         <h2>Cô dâu</h2>
         <p>Dương Thúy Vy</p>
       </div>
       <div class="card-description">
-        <p>Nhờ có nắng mới thấy cầu vồng Nhờ có anh mới thấy màu hạnh phúc</p>
+        <p>Nhờ có nắng mới thấy cầu vồng, nhờ có anh mới thấy màu hạnh phúc.</p>
       </div>
     </div>
-    <!-- Card chú rể -->
-    <div class="card groom">
-      <img src="img/per8.jpg" alt="Hình Chú Rể" />
+    <div class="card groom tilt-3d">
+      <span class="lazy-img-wrap">
+        <img class="lazy-img" data-src="img/per8.jpg" alt="Hình Chú Rể" />
+      </span>
       <div class="card-text">
         <h2>Chú rể</h2>
         <p>Nguyễn Huỳnh Phúc</p>
       </div>
       <div class="card-description">
-        <p>Em chỉ cần gửi một ánh mắt, anh sẵn sàng trao hết trái tim</p>
+        <p>Em chỉ cần gửi một ánh mắt, anh sẵn sàng trao hết trái tim.</p>
       </div>
+    </div>
   </section>
+
   <div class="btn-group">
     <a href="#rsvp" class="btn"><i class="fas fa-check-circle"></i> Xác nhận tham dự</a>
     <a href="#guestbook" class="btn"><i class="fas fa-heart"></i> Gửi lời chúc</a>
     <a href="#" class="btn gift-btn"><i class="fas fa-gift"></i> Mừng cưới</a>
   </div>
-  <!-- RSVP MỚI (THEO MẪU) -->
+
+  <!-- RSVP -->
   <section class="rsvp-section animate-on-scroll" id="rsvp">
     <div class="rsvp-wrapper">
-      <!-- Ảnh cặp đôi với hiệu ứng slide-in -->
-      <img src="img/Hinh pvv.jpg" alt="cap doi" class="couple-img" />
-
+      <span class="couple-img-wrap lazy-img-wrap">
+        <img data-src="img/Hinh-pvv.jpg" alt="Cặp đôi" class="lazy-img couple-img" />
+      </span>
       <h2>Xác Nhận Tham Dự</h2>
       <p class="rsvp-subtitle">
         Điều này giúp chúng tôi công tác đặt chỗ đám cưới được chu đáo.<br />
         Vui lòng xác nhận sớm để chúng tôi chuẩn bị tiếp đón bạn thật tốt!
       </p>
-      <!-- Form RSVP -->
       <form class="rsvp-new-form" id="rsvpNewForm">
+        <input type="hidden" name="formType" value="rsvp" />
         <div class="form-group">
           <label for="rsvpFullName">Họ và Tên</label>
           <input type="text" id="rsvpFullName" name="fullName" placeholder="Nhập họ và tên của bạn" required />
@@ -1805,15 +245,9 @@
           <label for="rsvpNumber">Số lượng tham gia</label>
           <select id="rsvpNumber" name="number" required>
             <option value="">-- Chọn --</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
             <option value="10">10</option>
           </select>
         </div>
@@ -1826,533 +260,71 @@
     </div>
   </section>
 
-  <!-- SỔ LƯU BÚT (Guestbook) -->
+  <!-- SỔ LƯU BÚT -->
   <section class="guestbook-section animate-on-scroll" id="guestbook">
     <div class="guestbook-container">
       <div class="guestbook-header">
-        <img src="img/luu-so.jpg" alt="Icon Dove" class="guestbook-icon" />
-
+        <span class="guestbook-icon-wrap lazy-img-wrap">
+          <img class="lazy-img guestbook-icon" data-src="img/luu-so.jpg" alt="Sổ lưu bút" />
+        </span>
         <h1>Sổ Lưu Bút</h1>
       </div>
       <p class="guestbook-description">
-        Cảm ơn bạn rất nhiều vì đã gửi những lời chúc mừng tốt đẹp nhất đến
-        đám cưới của chúng tôi!
+        Cảm ơn bạn rất nhiều vì đã gửi những lời chúc mừng tốt đẹp nhất đến đám cưới của chúng tôi!
       </p>
       <form class="guestbook-form" id="guestbookForm">
+        <input type="hidden" name="formType" value="wish" />
         <div class="form-group">
           <label for="wishName">Họ và Tên</label>
           <input type="text" id="wishName" name="name" placeholder="Nhập họ và tên của bạn" required />
         </div>
-        <div class="form-group">
+        <div class="form-group" style="position: relative;">
           <label for="wishMessage">Nhập lời chúc của bạn</label>
           <textarea id="wishMessage" name="message" rows="4" placeholder="Viết lời chúc của bạn..." required></textarea>
-        </div>
-        <div class="form-group">
-          <!-- Khu vực icon ở góc dưới cùng bên phải text area -->
           <div class="icon-container">
-            <!-- Icon gợi ý -->
-            <span class="icon-bulb" onclick="showAutoWishes()"> Chọn lời chúc ngẫu nhiên 💡</span>
-            <span class="icon-emoji" onclick="showEmojiPicker()">😊</span>
-            <!-- Container cho Emoji Picker (ẩn mặc định) -->
+            <span class="icon-bulb" onclick="showAutoWishes()"><i class="fas fa-lightbulb"></i> Gợi ý lời chúc</span>
+            <span class="icon-emoji" onclick="showEmojiPicker()">😊 Emoji</span>
             <div id="emojiPicker" class="emoji-picker-container" style="display: none;">
-              <span class="emoji" onclick="selectEmojiForText('😊')">😊</span>
-              <span class="emoji" onclick="selectEmojiForText('😂')">😂</span>
-              <span class="emoji" onclick="selectEmojiForText('😍')">😍</span>
-              <span class="emoji" onclick="selectEmojiForText('😎')">😎</span>
-              <span class="emoji" onclick="selectEmojiForText('😉')">😉</span>
-              <span class="emoji" onclick="selectEmojiForText('🤩')">🤩</span>
-              <span class="emoji" onclick="selectEmojiForText('😁')">😁</span>
-              <span class="emoji" onclick="selectEmojiForText('😆')">😆</span>
-              <span class="emoji" onclick="selectEmojiForText('🤣')">🤣</span>
-              <span class="emoji" onclick="selectEmojiForText('😊')">😊</span>
-              <span class="emoji" onclick="selectEmojiForText('😇')">😇</span>
-              <span class="emoji" onclick="selectEmojiForText('🙂')">🙂</span>
-              <span class="emoji" onclick="selectEmojiForText('🙃')">🙃</span>
-              <span class="emoji" onclick="selectEmojiForText('😉')">😉</span>
-              <span class="emoji" onclick="selectEmojiForText('😌')">😌</span>
-              <span class="emoji" onclick="selectEmojiForText('😍')">😍</span>
-              <span class="emoji" onclick="selectEmojiForText('😘')">😘</span>
-              <span class="emoji" onclick="selectEmojiForText('😖')">😖</span>
-              <span class="emoji" onclick="selectEmojiForText('😫')">😫</span>
-              <span class="emoji" onclick="selectEmojiForText('😡')">😡</span>
-              <span class="emoji" onclick="selectEmojiForText('🤬')">🤬</span>
-              <span class="emoji" onclick="selectEmojiForText('🤗')">🤗</span>
-              <span class="emoji" onclick="selectEmojiForText('🤭')">🤭</span>
-              <span class="emoji" onclick="selectEmojiForText('👻')">👻</span>
-              <span class="emoji" onclick="selectEmojiForText('😺')">😺</span>
-              <span class="emoji" onclick="selectEmojiForText('😹')">😹</span>
-              <span class="emoji" onclick="selectEmojiForText('😻')">😻</span>
-              <span class="emoji" onclick="selectEmojiForText('😽')">😽</span>
-              <span class="emoji" onclick="selectEmojiForText('🙀')">🙀</span>
-              <span class="emoji" onclick="selectEmojiForText('😾')">😾</span>
-              <!-- Thêm các emoji khác nếu cần -->
-
+              <span class="emoji">😊</span><span class="emoji">😂</span><span class="emoji">😍</span>
+              <span class="emoji">😎</span><span class="emoji">😉</span><span class="emoji">🤩</span>
+              <span class="emoji">😁</span><span class="emoji">😆</span><span class="emoji">🤣</span>
+              <span class="emoji">😇</span><span class="emoji">🙂</span><span class="emoji">🙃</span>
+              <span class="emoji">😌</span><span class="emoji">😘</span><span class="emoji">🤗</span>
+              <span class="emoji">🤭</span><span class="emoji">😺</span><span class="emoji">😻</span>
+              <span class="emoji">🥰</span><span class="emoji">💐</span><span class="emoji">🎉</span>
+              <span class="emoji">🎊</span><span class="emoji">💍</span><span class="emoji">🥂</span>
             </div>
           </div>
-          <!-- Hộp hiển thị lời chúc gợi ý -->
-          <div id="suggestionBox" class="suggestion-box">
-            <!-- Bên trong sẽ chứa danh sách lời chúc, tạm để rỗng -->
-          </div>
+          <div id="suggestionBox" class="suggestion-box"></div>
         </div>
         <button type="submit">Gửi lời chúc cho đôi tình nhân</button>
       </form>
-      <a href="wish.html" class="view-all-link" target="">
-        Xem tất cả lời chúc từ mọi người
+      <a href="wish.html" class="view-all-link">
+        Xem tất cả lời chúc từ mọi người <i class="fas fa-arrow-right"></i>
       </a>
     </div>
   </section>
-  <!-- Album cưới của chúng mình -->
+
+  <!-- Album -->
   <div class="album-btn-wrapper">
     <a href="album.html" class="album-btn">
       <i class="fas fa-images"></i> Album cưới của chúng mình
     </a>
   </div>
-  <!-- MODAL cho trạng thái Đang gửi (Sending) -->
-  <div class="modal-overlay" id="sendingModal">
-    <div class="modal-content">
-      <!-- Nếu không cần nút đóng, bạn có thể loại bỏ dòng dưới -->
-      <!-- <span class="modal-close" id="sendingModalClose">&times;</span> -->
-      <h2>Đang gửi...</h2>
-      <p>Vui lòng đợi trong giây lát.</p>
-    </div>
-  </div>
-  <!-- MODAL cho Mừng cưới (Thông tin chuyển khoản) -->
-  <!-- MODAL cho chuyển khoản -->
-  <div class="modal-overlay" id="transferModal">
-    <div class="modal-content">
-      <span class="modal-close" id="transferModalClose">&times;</span>
-      <h2>Thông tin chuyển khoản</h2>
-      <p><strong>Ngân hàng:</strong> BIDV</p>
-      <p>
-        <strong>Số tài khoản:</strong>
-        <span id="accountNumber">6612617033</span>
-      </p>
-      <p><strong>Tên chủ tài khoản:</strong> Nguyễn Huỳnh Phúc</p>
-      <p><strong>Nội dung chuyển khoản:</strong> Mừng cưới Phúc và Vy</p>
-      <!-- Nút Copy -->
-      <button id="copyBtn" class="btn">Copy thông tin tài khoản</button>
-      <img src="img/qr-ck.jpg" alt="QR Code" class="qr-code" />
-    </div>
-  </div>
-  <!-- MODAL Copy Số Tài khoản -->
-  <div class="modal-overlay" id="copyModal">
-    <div class="modal-content copy-modal-content">
-      <span class="modal-close" id="copyModalClose">&times;</span>
-      <h2>Số tài khoản đã được copy!</h2>
-      <p>Vui lòng dán vào ứng dụng chuyển khoản của bạn.</p>
-    </div>
-  </div>
+
   <!-- FOOTER -->
   <footer>
-    <p>
-      &copy; 2025 Thiệp cưới Nguyễn Huỳnh Phúc &amp; Dương Thúy Vy. All rights
-      reserved.
-    </p>
+    <p>&copy; 2025 Thiệp cưới Nguyễn Huỳnh Phúc &amp; Dương Thúy Vy. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript -->
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
   <script>
-    // Music
-    document.addEventListener("DOMContentLoaded", function () {
-      const musicToggle = document.getElementById("musicToggle");
-      const bgMusic = document.getElementById("bgMusic");
-
-      // Cố gắng phát nhạc ngay khi trang load (nếu trình duyệt cho phép)
-      bgMusic
-        .play()
-        .then(() => {
-          // Nếu thành công, cập nhật nút thành trạng thái "Tắt nhạc"
-          musicToggle.innerHTML =
-            '<i class="fas fa-volume-up"></i> | Tắt nhạc';
-        })
-        .catch((error) => {
-          // Nếu không tự động phát (ví dụ Safari), nút vẫn hiển thị "Bật nhạc"
-          console.warn(
-            "Autoplay không thành công, yêu cầu tương tác của người dùng.",
-            error
-          );
-          musicToggle.innerHTML =
-            '<i class="fas fa-volume-mute"></i> | Bật nhạc';
-        });
-
-      // Xử lý sự kiện click cho nút bật/tắt nhạc
-      musicToggle.addEventListener("click", function () {
-        if (bgMusic.paused) {
-          // Nếu nhạc đang dừng, bật âm thanh (bỏ muted nếu cần)
-          bgMusic
-            .play()
-            .then(() => {
-              musicToggle.innerHTML =
-                '<i class="fas fa-volume-up"></i> | Tắt nhạc';
-            })
-            .catch((err) => {
-              console.error("Lỗi khi phát nhạc:", err);
-            });
-        } else {
-          bgMusic.pause();
-          musicToggle.innerHTML =
-            '<i class="fas fa-volume-mute"></i> | Bật nhạc';
-        }
-      });
-    });
-    // Smooth scroll
-    document.addEventListener("DOMContentLoaded", function () {
-      var scroll = new SmoothScroll('a[href*="#"]', {
-        speed: 800, // Tốc độ cuộn (ms)
-        speedAsDuration: true, // Sử dụng tốc độ cố định
-      });
-    });
-    // Toggle mobile menu
-    function toggleMenu() {
-      const nav = document.getElementById("navbar");
-      nav.classList.toggle("open");
-    }
-
-    // Intersection Observer để thêm hiệu ứng khi cuộn tới các phần có class "animate-on-scroll"
     document.addEventListener("DOMContentLoaded", () => {
-      const observer = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("active");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-      document
-        .querySelectorAll(".animate-on-scroll")
-        .forEach((el) => observer.observe(el));
-    });
-
-    // URL cho form RSVP (gửi dữ liệu lên Google Sheets khác)
-    const scriptURL_RSVP =
-      "https://script.google.com/macros/s/AKfycbwARwmk5Mww4ja6tduJBwKzX8xMdQxK2f0An4aBr19-6JOhqPexe-fhsycRSduc65jiNQ/exec";
-    // URL cho form Guestbook
-    const scriptURL_Guestbook =
-      "https://script.google.com/macros/s/AKfycbwARwmk5Mww4ja6tduJBwKzX8xMdQxK2f0An4aBr19-6JOhqPexe-fhsycRSduc65jiNQ/exec";
-
-    // Xử lý submit form RSVP
-    const rsvpForm = document.getElementById("rsvpNewForm");
-    rsvpForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      // Hiển thị modal "Đang gửi..."
-      const sendingModal = document.getElementById("sendingModal");
-      sendingModal.classList.add("active");
-      fetch(scriptURL_RSVP, { method: "POST", body: new FormData(rsvpForm) })
-        .then((response) => {
-          // Sau khi gửi thành công, ẩn modal "Đang gửi..."
-          sendingModal.classList.remove("active");
-          // Hiển thị modal RSVP
-          document.getElementById("rsvpModal").classList.add("active");
-          rsvpForm.reset();
-        })
-        .catch((error) => {
-          console.error("Error!", error.message);
-          alert("Đã xảy ra lỗi khi gửi xác nhận tham dự. Vui lòng thử lại!");
-        });
-    });
-
-    // Xử lý submit form Guestbook
-    const guestbookForm = document.getElementById("guestbookForm");
-    guestbookForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      // Hiển thị modal "Đang gửi..."
-      const sendingModal = document.getElementById("sendingModal");
-      sendingModal.classList.add("active");
-
-
-
-      // Tạo dữ liệu FormData
-      const formData = new FormData(guestbookForm);
-      fetch(scriptURL_Guestbook, {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => {
-          // Sau khi gửi thành công, ẩn modal "Đang gửi..."
-          sendingModal.classList.remove("active");
-          // Hiển thị modal "Thank you!" cho Guestbook
-          document.getElementById("thankModal").classList.add("active");
-          guestbookForm.reset();
-        })
-        .catch((error) => {
-          console.error("Error!", error.message);
-          alert("Đã xảy ra lỗi khi gửi lời chúc. Vui lòng thử lại!");
-        });
-    });
-
-    // Nút X đóng modal Guestbook
-    document.getElementById("modalClose").addEventListener("click", () => {
-      document.getElementById("thankModal").classList.remove("active");
-    });
-
-    // Nút X đóng modal RSVP
-    document
-      .getElementById("rsvpModalClose")
-      .addEventListener("click", () => {
-        document.getElementById("rsvpModal").classList.remove("active");
-      });
-    // Nhiều trái tim
-    // Số lượng trái tim muốn tạo (tăng số này nếu cần)
-    const heartCount = 40;
-    document.addEventListener("DOMContentLoaded", () => {
-      for (let i = 0; i < heartCount; i++) {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        // Vị trí ngẫu nhiên: left từ 0% đến 100%, top từ 0% đến 100%
-        heart.style.left = Math.random() * 100 + "%";
-        heart.style.top = Math.random() * 100 + "%";
-        // Ngẫu nhiên thời gian delay để trái tim bay không cùng lúc (0 - 5 giây)
-        heart.style.animationDelay = Math.random() * 10 + "s";
-        // Thêm trái tim vào body
-        document.body.appendChild(heart);
+      if (window.SmoothScroll) {
+        new SmoothScroll('a[href*="#"]', { speed: 700, speedAsDuration: true });
       }
-    });
-
-    // Đếm ngược tới ngày ...2025 lúc 00:00:00
-    const weddingDate = new Date("2025-10-12T00:00:00").getTime();
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = weddingDate - now;
-
-      if (distance < 0) {
-        // Nếu đã qua ngày cưới, có thể ẩn countdown hoặc hiển thị thông báo
-        document.getElementById("days").textContent = "0";
-        document.getElementById("hours").textContent = "0";
-        document.getElementById("minutes").textContent = "0";
-        document.getElementById("seconds").textContent = "0";
-        return;
-      }
-
-      // Tính ngày, giờ, phút, giây
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // Hiển thị lên HTML
-      document.getElementById("days").textContent = days;
-      document.getElementById("hours").textContent = hours;
-      document.getElementById("minutes").textContent = minutes;
-      document.getElementById("seconds").textContent = seconds;
-    }
-
-    // Cập nhật mỗi giây
-    setInterval(updateCountdown, 1000);
-    updateCountdown(); // Gọi ngay lần đầu
-
-    // Xử lý mở modal Gift (Mừng cưới)
-    document
-      .querySelector(".gift-btn")
-      .addEventListener("click", function (e) {
-        e.preventDefault();
-        document.getElementById("transferModal").classList.add("active");
-      });
-
-    // Xử lý đóng modal Gift
-    document
-      .getElementById("transferModalClose")
-      .addEventListener("click", function () {
-        document.getElementById("transferModal").classList.remove("active");
-      });
-
-    // Modal thông báo thành công chuyển khoản
-    document.getElementById("copyBtn").addEventListener("click", function () {
-      const accountText =
-        document.getElementById("accountNumber").textContent;
-
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard
-          .writeText(accountText)
-          .then(() => {
-            // Hiển thị modal thông báo copy thành công
-            document.getElementById("copyModal").classList.add("active");
-          })
-          .catch((err) => {
-            console.error("Copy error: ", err);
-            alert("Copy thất bại, vui lòng thử lại!");
-          });
-      } else {
-        // Fallback nếu Clipboard API không hỗ trợ
-        let textArea = document.createElement("textarea");
-        textArea.value = accountText;
-        textArea.style.position = "fixed";
-        textArea.style.top = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-          document.execCommand("copy");
-          document.getElementById("copyModal").classList.add("active");
-        } catch (err) {
-          console.error("Fallback copy error: ", err);
-          alert("Copy thất bại, vui lòng thử lại!");
-        }
-        document.body.removeChild(textArea);
-      }
-    });
-
-    // Nút đóng modal copy
-    document
-      .getElementById("copyModalClose")
-      .addEventListener("click", function () {
-        document.getElementById("copyModal").classList.remove("active");
-      });
-    //Script kích hoạt hiệu ứng khi card xuất hiện
-    document.addEventListener("DOMContentLoaded", function () {
-      const cards = document.querySelectorAll('.card');
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            entry.target.classList.add("visible");
-            // Ngừng quan sát sau khi đã bật hiệu ứng
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.5 });
-
-      cards.forEach(card => {
-        observer.observe(card);
-      });
-    });
-    // Lời chúc tự động
-    const autoWishes = [
-      "Chúc hai bạn trăm năm hạnh phúc!",
-      "Mong hai bạn sớm có tin vui!",
-      "Chúc gia đình nhỏ luôn tràn ngập tiếng cười.",
-      "Chúc đôi uyên ương một đời viên mãn.",
-      "Chúc tình yêu của hai bạn ngày càng bền chặt!",
-      "Chúc mừng cặp đôi đẹp đẽ này có một tương lai tràn đầy hạnh phúc",
-      "Chúc mừng em gái của anh đã tìm được người mình yêu, hy vọng cuộc sống của hai vợ chồng sẽ ngập tràn niềm vui và thành công",
-      "Chúc cặp đôi này có một hành trình mới tràn đầy niềm vui, sự đồng thuận và hạnh phúc vĩnh cửu",
-      "Chúc mừng đám cưới! Mong rằng tình yêu của hai bạn sẽ luôn bền vững và trường tồn trong mọi thử thách",
-      "Thiệp mừng trao tay, mất ngay tạ thóc",
-      "Thay mặt Đảng và Chính phủ chúc hai đứa mãi hạnh phúc",
-      "Chúc bạn lấy một chồng, đẻ 2 con đủ nếp đủ tẻ, sống ở nhà 3 tầng, mua xe 4 bánh",
-      "Cuối cùng cũng có người chịu rước con bạn tui rùi!!!!! Cảm tạ trời đất! Chúc con bạn tui mãi hạnh phúc, sớm sinh quý tử",
-      "Chúc mừng con bạn ế thoát kiếp FA. Mãi hạnh phúc bà đừng quên tao nhé!"
-    ];
-    function showAutoWishes() {
-      const suggestionBox = document.getElementById("suggestionBox");
-      if (suggestionBox.style.display === "block") {
-        // Ẩn box nếu đang mở
-        suggestionBox.style.display = "none";
-        return;
-      }
-
-      // Nếu đang ẩn, hiển thị danh sách
-      let html = "<ul>";
-      autoWishes.forEach((wish) => {
-        // Mỗi lời chúc là 1 item <li>
-        html += `<li onclick="chooseWish('${wish}')">${wish}</li>`;
-      });
-      html += "</ul>";
-
-      suggestionBox.innerHTML = html;
-      suggestionBox.style.display = "block";
-    }
-
-    function chooseWish(wishText) {
-      // Chèn lời chúc vào textarea
-      const textarea = document.getElementById("wishMessage");
-      textarea.value = wishText;
-
-      // Đóng suggestionBox
-      document.getElementById("suggestionBox").style.display = "none";
-    }
-
-    // Hàm hiển thị hoặc ẩn Emoji Picker
-    function showEmojiPicker() {
-      const picker = document.getElementById("emojiPicker");
-      // Toggle hiển thị: nếu đang ẩn thì hiện, ngược lại ẩn
-      if (picker.style.display === "none" || picker.style.display === "") {
-        picker.style.display = "block";
-      } else {
-        picker.style.display = "none";
-      }
-    }
-
-    // Hàm xử lý khi người dùng chọn emoji
-    function selectEmojiForText(emoji) {
-      const textArea = document.getElementById("wishMessage");
-      // Chèn emoji vào cuối nội dung hiện tại của ô text
-      textArea.value = textArea.value.trim() + " " + emoji;
-      // Cập nhật trường hidden nếu bạn muốn lưu giá trị riêng
-      document.getElementById("selectedEmoji").value = emoji;
-      // Sau khi chọn, ẩn picker
-      document.getElementById("emojiPicker").style.display = "none";
-    }
-    // Xử lý khi nhấn vào vùng trống tự đóng
-    document.addEventListener("click", function (event) {
-      // Xử lý cho Emoji Picker
-      const emojiPicker = document.getElementById("emojiPicker");
-      // Nếu emojiPicker đang hiển thị và người dùng click không trong vùng emojiPicker
-      // và cũng không click vào nút kích hoạt (ví dụ có class "icon-emoji")
-      if (
-        emojiPicker &&
-        emojiPicker.style.display === "block" &&
-        !emojiPicker.contains(event.target) &&
-        !event.target.classList.contains("icon-emoji")
-      ) {
-        emojiPicker.style.display = "none";
-      }
-
-      // Xử lý cho Suggestion Box (nếu có)
-      const suggestionBox = document.getElementById("suggestionBox");
-      if (
-        suggestionBox &&
-        suggestionBox.style.display === "block" &&
-        !suggestionBox.contains(event.target) &&
-        !event.target.classList.contains("icon-bulb")
-      ) {
-        suggestionBox.style.display = "none";
-      }
-    });
-    // Nhóm button
-    document.addEventListener("DOMContentLoaded", function () {
-      // Đảm bảo nhóm nút chính ẩn khi trang load
-      const btnItems = document.querySelector(".floating-btn-items");
-      btnItems.style.display = "none";
-
-      // Đặt icon toggle mặc định là hamburger (3 gạch)
-      const toggleBtn = document.getElementById("toggleBtn");
-      toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-
-      // Xử lý sự kiện click cho nút toggle
-      toggleBtn.addEventListener("click", function () {
-        if (btnItems.style.display === "none" || btnItems.style.display === "") {
-          // Nếu nhóm nút đang ẩn thì hiện nó lên
-          btnItems.style.display = "flex";
-          // Đổi icon toggle thành X (thoát)
-          toggleBtn.innerHTML = '<i class="fas fa-times-circle"></i>';
-        } else {
-          // Nếu nhóm nút đang hiện thì ẩn nó đi
-          btnItems.style.display = "none";
-          // Đổi icon toggle thành hamburger (3 gạch)
-          toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-      });
-    });
-    // Lắng nghe sự kiện click cho tất cả các nút có class floating-btn
-    const floatingButtons = document.querySelectorAll('.floating-btn');
-
-    floatingButtons.forEach(btn => {
-      btn.addEventListener('click', function () {
-        // Lấy id đích từ thuộc tính data-scroll
-        const targetId = this.getAttribute('data-scroll');
-        const targetElement = document.getElementById(targetId);
-
-        // Nếu phần đích tồn tại, cuộn mượt tới nó
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
     });
   </script>
 </body>

@@ -1,0 +1,423 @@
+/* =========================================================
+   ALBUM.CSS — Style cho trang Album ảnh cưới (album.html)
+   ========================================================= */
+
+.album-hero {
+  padding: 130px 20px 50px;
+  text-align: center;
+  background: linear-gradient(160deg, var(--clr-bg-blush) 0%, var(--clr-bg) 70%);
+}
+
+.album-hero h1 {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  color: var(--clr-primary-dark);
+}
+
+.album-hero p {
+  color: var(--clr-text-light);
+  max-width: 520px;
+  margin: 10px auto 0;
+}
+
+.section-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.section-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--clr-text);
+  position: relative;
+  display: inline-block;
+}
+
+.section-title h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--clr-gold);
+  margin: 10px auto 0;
+}
+
+.section-title p {
+  color: var(--clr-text-light);
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+
+.section-sub {
+  text-align: center;
+  color: var(--clr-text-light);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+}
+
+/* ---------- Gallery grid (masonry kiểu Pinterest bằng CSS columns) ---------- */
+.gallery-grid {
+  columns: 3 260px;
+  column-gap: 16px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  position: relative;
+  transition: box-shadow 0.3s var(--ease);
+}
+
+.gallery-item:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.gallery-item .lazy-img-wrap {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+}
+
+.gallery-item.ar-square .lazy-img-wrap {
+  aspect-ratio: 1 / 1;
+}
+
+.gallery-item.ar-tall .lazy-img-wrap {
+  aspect-ratio: 3 / 4;
+}
+
+.gallery-item.ar-wide .lazy-img-wrap {
+  aspect-ratio: 4 / 3;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+}
+
+.gallery-item .caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 12px 10px;
+  background: linear-gradient(0deg, rgba(74, 58, 61, 0.75), transparent);
+  color: #fff;
+  font-size: 0.82rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.gallery-item:hover .caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .gallery-grid {
+    columns: 2 160px;
+    column-gap: 10px;
+  }
+
+  .gallery-item {
+    margin-bottom: 10px;
+  }
+}
+
+.gallery-empty {
+  text-align: center;
+  color: var(--clr-text-light);
+  padding: 30px 20px;
+  background: var(--clr-bg-soft);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+}
+
+/* ---------- Khu vực upload ảnh khách mời ---------- */
+.upload-panel {
+  max-width: 620px;
+  margin: 0 auto 40px;
+  background: var(--clr-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 30px;
+}
+
+.upload-config-notice {
+  max-width: 620px;
+  margin: 0 auto 24px;
+  background: #fff6e0;
+  border: 1px solid var(--clr-gold-light);
+  color: #8a6b1f;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  display: none;
+}
+
+.upload-config-notice.show {
+  display: block;
+}
+
+.upload-form .form-group {
+  margin-bottom: 14px;
+}
+
+.upload-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: var(--clr-text);
+}
+
+.upload-form input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--clr-bg-blush);
+  background: var(--clr-bg);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--clr-text);
+}
+
+.dropzone {
+  border: 2px dashed var(--clr-primary-light);
+  border-radius: var(--radius-md);
+  padding: 30px 16px;
+  text-align: center;
+  color: var(--clr-text-light);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+  background: var(--clr-bg);
+}
+
+.dropzone:hover,
+.dropzone.dragover {
+  border-color: var(--clr-primary);
+  background: var(--clr-bg-blush);
+}
+
+.dropzone i {
+  font-size: 1.8rem;
+  color: var(--clr-primary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.dropzone input[type="file"] {
+  display: none;
+}
+
+.file-preview-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.file-preview {
+  width: 78px;
+  height: 78px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.file-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.file-preview .progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.file-preview .progress-bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--clr-sage);
+  transition: width 0.2s var(--ease);
+}
+
+.file-preview.done .progress-bar span {
+  background: var(--clr-sage-dark);
+}
+
+.file-preview.error .progress-bar span {
+  background: #c0524a;
+}
+
+.upload-submit-btn {
+  width: 100%;
+  margin-top: 18px;
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
+  color: #fff;
+  border: none;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.upload-submit-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.upload-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.upload-status {
+  margin-top: 12px;
+  font-size: 0.88rem;
+  text-align: center;
+  color: var(--clr-sage-dark);
+  min-height: 1.2em;
+}
+
+.upload-status.error {
+  color: #c0524a;
+}
+
+/* ---------- Lightbox ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 20, 22, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox-inner {
+  position: relative;
+  max-width: 90vw;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-inner img {
+  max-width: 90vw;
+  max-height: 78vh;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  animation: lightboxIn 0.3s var(--ease);
+}
+
+@keyframes lightboxIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightbox-caption {
+  color: #fff;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.08);
+}
+
+.lightbox-close {
+  top: -50px;
+  right: 0;
+}
+
+.lightbox-prev {
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 700px) {
+
+  .lightbox-prev,
+  .lightbox-next {
+    width: 38px;
+    height: 38px;
+  }
+
+  .lightbox-close {
+    top: -46px;
+  }
+}
+

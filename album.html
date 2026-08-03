@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Album cưới - Nguyễn Huỳnh Phúc &amp; Dương Thúy Vy</title>
+  <meta name="description" content="Album ảnh cưới của Phúc & Vy - xem ảnh cưới và chia sẻ khoảnh khắc của bạn tại tiệc cưới." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;1,500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/album.css" />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-img-wrap lazy-img-wrap">
+        <img class="lazy-img" data-src="img/couple4.jpg" alt="Logo P&V" />
+      </span>
+      <div class="logo-text">P&amp;V</div>
+    </div>
+    <div class="menu-icon" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+    <nav id="navbar">
+      <ul>
+        <li><a class="floating-btn" href="index.html" style="text-decoration:none;"><i class="fas fa-house"></i> Trang chủ</a></li>
+        <li><a class="floating-btn" href="index.html#rsvp" style="text-decoration:none;"><i class="fas fa-check-circle"></i> Xác nhận</a></li>
+        <li><a class="floating-btn" href="wish.html" style="text-decoration:none;"><i class="fas fa-feather"></i> Lưu bút</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="album-hero">
+    <h1><i class="fas fa-images"></i> Album cưới của chúng mình</h1>
+    <p>Những khoảnh khắc đẹp nhất trong ngày trọng đại. Cuộn xuống để xem thêm - ảnh chỉ tải khi bạn lướt tới, giúp trang luôn mượt mà!</p>
+  </section>
+
+  <!-- CURATED GALLERY -->
+  <section class="section-wrap">
+    <div class="section-title">
+      <h2>Ảnh cưới của Phúc &amp; Vy</h2>
+    </div>
+    <div class="gallery-grid" id="curatedGrid"></div>
+  </section>
+
+  <!-- UPLOAD ẢNH KHÁCH MỜI -->
+  <section class="section-wrap" id="upload">
+    <div class="section-title">
+      <h2>Chia sẻ khoảnh khắc của bạn</h2>
+      <p>Bạn có ảnh chụp cùng cô dâu chú rể? Hãy tải lên để lưu giữ cùng mọi người nhé!</p>
+    </div>
+
+    <div class="upload-config-notice" id="uploadConfigNotice">
+      <i class="fas fa-triangle-exclamation"></i>
+      Tính năng tải ảnh lên chưa được cấu hình. Chủ trang vui lòng xem hướng dẫn trong
+      <code>SETUP.md</code> để bật Cloudinary + Google Apps Script.
+    </div>
+
+    <div class="upload-panel">
+      <form class="upload-form" id="uploadForm">
+        <div class="form-group">
+          <label for="uploaderName">Tên của bạn</label>
+          <input type="text" id="uploaderName" placeholder="Nhập tên của bạn" required />
+        </div>
+        <div class="form-group">
+          <label for="uploaderMessage">Lời nhắn (tùy chọn)</label>
+          <input type="text" id="uploaderMessage" placeholder="Ví dụ: Ảnh chụp lúc tiệc nhà gái..." />
+        </div>
+        <div class="form-group">
+          <label>Chọn ảnh</label>
+          <div class="dropzone" id="dropzone">
+            <i class="fas fa-cloud-arrow-up"></i>
+            <div>Kéo thả ảnh vào đây hoặc bấm để chọn ảnh</div>
+            <input type="file" id="fileInput" accept="image/*" multiple />
+          </div>
+          <div class="file-preview-list" id="filePreviewList"></div>
+        </div>
+        <button type="submit" class="upload-submit-btn" id="uploadSubmitBtn">
+          <i class="fas fa-paper-plane"></i> Gửi ảnh
+        </button>
+        <div class="upload-status" id="uploadStatus"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- GUEST GALLERY -->
+  <section class="section-wrap">
+    <div class="section-title">
+      <h2>Khoảnh khắc từ khách mời</h2>
+    </div>
+    <div class="gallery-grid" id="guestGrid"></div>
+    <div class="gallery-empty" id="guestEmpty" style="display:none;">
+      Chưa có ảnh nào từ khách mời. Hãy là người đầu tiên chia sẻ khoảnh khắc của bạn!
+    </div>
+  </section>
+
+  <div style="text-align:center;">
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Thiệp cưới Nguyễn Huỳnh Phúc &amp; Dương Thúy Vy. All rights reserved.</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightboxClose"><i class="fas fa-xmark"></i></button>
+      <button class="lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+      <img id="lightboxImg" src="" alt="" />
+      <button class="lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/album.js"></script>
+</body>
+
+</html>
