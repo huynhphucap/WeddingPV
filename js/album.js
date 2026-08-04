@@ -133,6 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("uploadSubmitBtn");
 
   let selectedFiles = [];
+  // Khớp với "Max file size" đang đặt trong Cloudinary upload preset (mặc định 10MB).
+  const MAX_FILE_SIZE_MB = 10;
 
   if (dropzone && fileInput) {
     dropzone.addEventListener("click", () => fileInput.click());
@@ -156,11 +158,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function addFiles(fileList) {
     const files = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
+    const oversized = [];
     files.forEach((file) => {
+      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        oversized.push(file.name);
+        return;
+      }
       const id = `f${Date.now()}${Math.random().toString(16).slice(2)}`;
       selectedFiles.push({ id, file, status: "pending", progress: 0 });
     });
     renderPreviews();
+
+    if (oversized.length) {
+      uploadStatus.classList.add("error");
+      uploadStatus.textContent =
+        `Ảnh "${oversized.join(", ")}" nặng hơn ${MAX_FILE_SIZE_MB}MB nên chưa thêm vào danh sách. ` +
+        `Vui lòng nén ảnh (vd. squoosh.app) rồi thử lại.`;
+    } else if (uploadStatus.classList.contains("error")) {
+      uploadStatus.classList.remove("error");
+      uploadStatus.textContent = "";
+    }
   }
 
   function renderPreviews() {
@@ -206,7 +223,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           resolve(JSON.parse(xhr.responseText));
         } else {
-          reject(new Error("Tải ảnh lên thất bại (" + xhr.status + ")"));
+          let message = "Tải ảnh lên thất bại (" + xhr.status + ")";
+          try {
+            const body = JSON.parse(xhr.responseText);
+            if (body && body.error && body.error.message) message = body.error.message;
+          } catch (e) {
+            // Giữ nguyên message mặc định nếu Cloudinary không trả JSON hợp lệ.
+          }
+          reject(new Error(message));
         }
       };
       xhr.onerror = () => reject(new Error("Lỗi mạng khi tải ảnh lên"));
@@ -243,6 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let uploaded = 0;
       const newlyUploaded = [];
+      const failures = [];
 
       for (const entry of selectedFiles) {
         try {
@@ -257,22 +282,29 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (err) {
           console.error(err);
           setFileProgress(entry.id, 100, "error");
+          failures.push(`${entry.file.name}: ${err.message}`);
         }
       }
 
       submitBtn.disabled = false;
 
-      if (uploaded > 0) {
+      if (uploaded > 0 && !failures.length) {
         uploadStatus.classList.remove("error");
         uploadStatus.textContent = `Đã gửi ${uploaded} ảnh thành công. Cảm ơn bạn đã chia sẻ khoảnh khắc!`;
+      } else if (uploaded > 0 && failures.length) {
+        uploadStatus.classList.add("error");
+        uploadStatus.textContent = `Đã gửi ${uploaded} ảnh thành công. Một số ảnh lỗi: ${failures.join(" | ")}`;
+      } else {
+        uploadStatus.classList.add("error");
+        uploadStatus.textContent = failures.join(" | ") || "Không có ảnh nào được tải lên thành công. Vui lòng thử lại.";
+      }
+
+      if (uploaded > 0) {
         guestPhotos = [...newlyUploaded, ...guestPhotos];
         renderGuestGrid();
         selectedFiles = [];
         renderPreviews();
         uploadForm.reset();
-      } else {
-        uploadStatus.classList.add("error");
-        uploadStatus.textContent = "Không có ảnh nào được tải lên thành công. Vui lòng thử lại.";
       }
     });
   }
