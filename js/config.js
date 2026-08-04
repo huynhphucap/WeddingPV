@@ -14,7 +14,7 @@ window.WEDDING_CONFIG = {
   // Cloudinary dùng để lưu & tối ưu ảnh khách mời tải lên (nén/resize tự động -> web load nhanh).
   // Đăng ký miễn phí tại https://cloudinary.com rồi điền 2 giá trị bên dưới.
   cloudinary: {
-    cloudName: "YOUR_CLOUD_NAME",
-    uploadPreset: "YOUR_UNSIGNED_UPLOAD_PRESET",
+    cloudName: "gexc6yxu",
+    uploadPreset: "upload_moment_in_time_image",
   },
 };
