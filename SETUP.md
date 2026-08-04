@@ -27,7 +27,7 @@ nhẹ nhàng thay vì icon ảnh vỡ. Bạn có thể thêm ảnh thật bất 
 
 | Vị trí                    | Tên file cần dùng      |
 | -------------------------- | ----------------------- |
-| Logo header / ảnh nền Save the Date & Hero | `img/couple4.jpg`, `img/couple1.jpg` |
+| Logo header / ảnh nền Save the Date & Hero (đã gộp chung 1 section, dùng chung 1 ảnh) | `img/couple4.jpg` |
 | Ảnh cô dâu / chú rể         | `img/per22.jpg`, `img/per8.jpg` |
 | Ảnh cặp đôi ở mục RSVP      | `img/Hinh-pvv.jpg` (lưu ý: không dấu cách trong tên file) |
 | Icon sổ lưu bút             | `img/luu-so.jpg` |

@@ -4,7 +4,7 @@
 từng file bằng ảnh thật của bạn, **giữ nguyên tên file**:
 
 - `qr-ck.jpg` — QR chuyển khoản mừng cưới
-- `couple1.jpg`, `couple4.jpg` — ảnh cặp đôi dùng ở trang chủ
+- `couple4.jpg` — ảnh cặp đôi dùng cho logo header + nền section Save the Date/Hero (đã gộp chung 1 section, chỉ dùng 1 ảnh)
 - `per22.jpg`, `per8.jpg` — ảnh chân dung cô dâu/chú rể
 - `Hinh-pvv.jpg` — ảnh dùng ở phần thông tin
 - `luu-so.jpg` — ảnh minh hoạ sổ lưu bút
