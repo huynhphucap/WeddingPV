@@ -88,6 +88,13 @@
 
 .hero.bg-loaded {
   animation: zoomBg 10s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero.bg-loaded {
+    animation: none;
+  }
 }
 
 @keyframes zoomBg {

@@ -40,7 +40,7 @@ function initMusic() {
 }
 
 /* ---------- Trái tim bay nhẹ nhàng ---------- */
-function initFloatingHearts(count = 18) {
+function initFloatingHearts(count = 10) {
   const svgHeart =
     '<svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,16,21.2,16,21.2s16-11.8,16-21.2 C32,3.8,28.2,0,23.6,0z"/></svg>';
   const frag = document.createDocumentFragment();
@@ -146,6 +146,7 @@ function loadLazyImage(img) {
     { once: true }
   );
 
+  img.decoding = "async";
   img.src = src;
   img.removeAttribute("data-src");
 }
@@ -188,19 +189,37 @@ function initLazyBackgrounds(root = document) {
   targets.forEach((el) => observer.observe(el));
 }
 
-/* ---------- Hiệu ứng 3D tilt khi hover (thẻ ảnh, card...) ---------- */
+/* ---------- Hiệu ứng 3D tilt khi hover (thẻ ảnh, card...) ----------
+   Đo rect 1 lần lúc mouseenter (tránh forced reflow ở mỗi mousemove)
+   và dồn cập nhật transform vào requestAnimationFrame. */
 function initTilt3D(selector = ".tilt-3d", intensity = 10) {
   const els = document.querySelectorAll(selector);
   els.forEach((el) => {
-    el.addEventListener("mousemove", (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const rotateY = ((x / rect.width) - 0.5) * intensity * 2;
-      const rotateX = (0.5 - (y / rect.height)) * intensity * 2;
-      el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03,1.03,1.03)`;
+    let rect = null;
+    let ticking = false;
+    let pendingEvent = null;
+
+    el.addEventListener("mouseenter", () => {
+      rect = el.getBoundingClientRect();
     });
+
+    el.addEventListener("mousemove", (e) => {
+      pendingEvent = e;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (!rect || !pendingEvent) return;
+        const x = pendingEvent.clientX - rect.left;
+        const y = pendingEvent.clientY - rect.top;
+        const rotateY = ((x / rect.width) - 0.5) * intensity * 2;
+        const rotateX = (0.5 - (y / rect.height)) * intensity * 2;
+        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03,1.03,1.03)`;
+      });
+    });
+
     el.addEventListener("mouseleave", () => {
+      rect = null;
       el.style.transform = "perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)";
     });
   });
@@ -214,8 +233,16 @@ function initScrollReveal() {
     (entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("active");
-          obs.unobserve(entry.target);
+          const el = entry.target;
+          el.classList.add("active");
+          obs.unobserve(el);
+          el.addEventListener(
+            "transitionend",
+            () => {
+              el.style.willChange = "auto";
+            },
+            { once: true }
+          );
         }
       });
     },
