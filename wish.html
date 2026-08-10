@@ -53,9 +53,33 @@
     <p>Toàn bộ lời chúc yêu thương mà bạn bè, người thân đã gửi đến Phúc &amp; Vy.</p>
   </section>
 
-  <div class="wish-toolbar">
-    <span id="wishCount"></span>
-    <button class="wish-refresh-btn" id="refreshBtn"><i class="fas fa-rotate-right"></i> Tải lại</button>
+  <div class="wish-tabbar">
+    <div class="wish-tabbar-icon"><i class="fas fa-sliders"></i></div>
+
+    <div class="wish-tab" id="sortTab">
+      <span class="wish-tab-label">Sắp xếp</span>
+      <span class="wish-tab-value" id="sortValue">Mới nhất trước <i class="fas fa-chevron-down"></i></span>
+      <div class="wish-tab-dropdown" id="sortDropdown">
+        <div data-sort="desc" class="active">Mới nhất trước</div>
+        <div data-sort="asc">Cũ nhất trước</div>
+      </div>
+    </div>
+
+    <div class="wish-tab-divider"></div>
+
+    <div class="wish-tab">
+      <span class="wish-tab-label">Tìm theo tên</span>
+      <input type="text" id="searchInput" placeholder="Nhập tên..." autocomplete="off" />
+    </div>
+
+    <div class="wish-tab-divider"></div>
+
+    <div class="wish-tab">
+      <span class="wish-tab-label">Tổng cộng</span>
+      <span class="wish-tab-value" id="wishCount">0 lời chúc</span>
+    </div>
+
+    <button class="wish-tabbar-btn" id="refreshBtn"><i class="fas fa-rotate-right"></i> Tải lại</button>
   </div>
 
   <div class="wish-list" id="wishList"></div>
